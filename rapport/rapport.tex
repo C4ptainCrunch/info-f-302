@@ -37,8 +37,8 @@ $\mu$ doit satisfaire les contraintes suivantes :
 \begin{itemize}
   \item Tout rectangle ne doit pas dépasser du grand rectangle :
   $$\forall i \in k,
-  A(i) + \mathcal{X}(i) \leq n
-  \land B(i) + \mathcal{Y}(i) \leq m
+  A(i) + \mathcal{X}(i) \leq m
+  \land B(i) + \mathcal{Y}(i) \leq n
   \land A(i) \geq 0
   \land B(i) \geq 0$$
 
@@ -52,12 +52,12 @@ $\mu$ doit satisfaire les contraintes suivantes :
 \end{itemize}
 
 \subsection{Construire une formule $\Phi$ en FNC}
-On commence par expirmer chaque contrainte en FNC :
+On commence par exprimer chaque contrainte en FNC :
 \begin{itemize}
   \item $C_1$ : $
   \bigwedge\limits_{i \in k}
-  A(i) + \mathcal{X}(i) \leq n
-  \land B(i) + \mathcal{Y}(i) \leq m
+  A(i) + \mathcal{X}(i) \leq m
+  \land B(i) + \mathcal{Y}(i) \leq n
   \land A(i) \geq 0
   \land B(i) \geq 0$
 
@@ -85,5 +85,32 @@ Si le carré de côté $\sqrt{a}$ satisfait le problème, nous nous arrêtons l�
 Si il ne le satisfait pas, nous doublons $n$ jusqu'à ce qu'il le satisfasse. A ce moment là, nous avons une borne inférieure ($\frac{n}{2}$) et supérieure ($n$) pour la taille minimale du côté du carré.
 
 A partir de ces deux bornes, nous pouvons faire une recherche dichotomique pour rapprocher celles-ci jusqu'à ce qu'elles soient identiques.
+
+\subsection{Étant donné $n$, trouver la dimension du plus petit carré contenant les carrés $\{r_1 \ldots r_n \}$}
+
+Nous pouvons considérer que ce problème est un cas particulier du précédent et par conséquent le résoudre de la même manière.
+
+\subsection{Ajouter une 3ème dimension}
+
+\subsubsection{Implémenter}
+\subsubsection{Plus petite dimension du cube admettant une solution}
+
+\subsection{Empêcher un pavé de ``flotter''}
+Nous pouvons la rajouter la contrainte suivante : Soit le pavé est au sol, soit la base du pavé doit être au même $z$ que le sommet d'un autre ($C_1$) et vu d'en haut, la base du premier doit intersecter avec le sommet de l'autre ($C_2$) :
+
+$$\forall i \in k, \exists j \in k, (C_1 \land C_2) \lor C(i) = 0$$
+
+Les propositions sont définies comme suit :
+\begin{itemize}
+  \item $C_1$ :
+  $
+  C(j) + \mathcal{Z}(j) = C(i)
+  $
+  \item $C_2$ : $C_{21} \land C_{22}$ avec :
+  \begin{itemize}
+    \item $C_21$ : $A(i) \geq A(j) \land A(i) + \mathcal{X}(i) \leq A(j) + \mathcal{X}(j)$
+    \item $C_22$ : $B(i) \geq B(j) \land B(i) + \mathcal{Y}(i) \leq B(j) + \mathcal{Y}(j)$
+  \end{itemize}
+\end{itemize}
 
 \end{document}
