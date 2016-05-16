@@ -1,0 +1,60 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[french]{babel}
+\usepackage{fullpage}
+\usepackage{hyperref}
+\usepackage{amssymb}
+\usepackage{upgreek}
+
+\title{
+    Orthogonal Packing\\
+    \small Projet d'informatique fondamentale - INFO-F-302
+}
+\author{
+    Nikita \bsc{Marchant} et Romain \bsc{Fontaine}\\
+    ULB BA3 2015-2016
+}
+\date{20 mai 2016}
+
+
+
+\begin{document}
+\maketitle
+\tableofcontents
+
+\section{\'Enonc\'e}
+\subsection{Définitions}
+
+\subsection{Objectif}
+
+\section{Questions}
+\subsection{Ecrire les contraintes que soit satfisfaire $\mu$}
+
+$\mu$ doit satisfaire les contraintes suivantes :
+
+\begin{itemize}
+  \item Tout rectanlge ne doit pas dépasser du grand rectangle :
+  $$\forall i \in k,
+  A(i) + \mathcal{X}(i) \leq n
+  \land B(i) + \mathcal{Y}(i) \leq m
+  \land A(i) \geq 0
+  \land B(i) \geq 0$$
+
+  \item Deux rectangles ne peuvent pas se superposer :
+  $$\forall i, \forall j, \neq i,
+  A(i) + \mathcal{X}(i) \leq  A(j)
+  \lor A(i) \geq A(j) + \mathcal{X}(j)
+  \lor B(i) + \mathcal{Y}(i) \leq  B(j)
+  \lor B(i) \geq B(j) + \mathcal{Y}(j)
+  $$
+\end{itemize}
+
+\subsection{Construire une formule $\Phi$ en FNC}
+On commence par expirmer chaque contrainte en FNC :
+\begin{itemize}
+  \item $C_1$ : $$
+\end{itemize}
+
+\end{document}
