@@ -108,9 +108,29 @@ Les propositions sont définies comme suit :
   $
   \item $C_2$ : $C_{21} \land C_{22}$ avec :
   \begin{itemize}
-    \item $C_21$ : $A(i) \geq A(j) \land A(i) + \mathcal{X}(i) \leq A(j) + \mathcal{X}(j)$
-    \item $C_22$ : $B(i) \geq B(j) \land B(i) + \mathcal{Y}(i) \leq B(j) + \mathcal{Y}(j)$
+    \item $C_{21}$ : $A(i) \geq A(j) \land A(i) + \mathcal{X}(i) \leq A(j) + \mathcal{X}(j)$
+    \item $C_{22}$ : $B(i) \geq B(j) \land B(i) + \mathcal{Y}(i) \leq B(j) + \mathcal{Y}(j)$
   \end{itemize}
 \end{itemize}
+
+\subsection{Pivotage}
+
+\subsection{Minimum d'unités de contact}
+
+On peut définir le nombre d'unités de contact avec le côté inférieur comme ceci :
+$$
+\sum_{\forall i \in k, A(i) = 0} \mathcal{Y}(i)
+$$
+
+De la même manière, on peut exprimer la somme des unités de contact sur les 4 côtés (bas, gauche, haut, droite) :
+
+$$
+\Gamma = \sum_{\forall i \in k, A(i) = 0} \mathcal{Y}(i) +
+\sum_{\forall i \in k, B(i) = 0} \mathcal{X}(i) +
+\sum_{\forall i \in k, A(i) + \mathcal{X}(i) =  n} \mathcal{Y}(i) +
+\sum_{\forall i \in k, B(i) + \mathcal{Y}(i) = m} \mathcal{X}(i)
+$$
+
+Dès lors, on peut rajouter la contrainte $\Gamma \geq p$
 
 \end{document}
