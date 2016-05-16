@@ -113,4 +113,24 @@ Les propositions sont définies comme suit :
   \end{itemize}
 \end{itemize}
 
+\subsection{Pivotage}
+
+\subsection{Minimum d'unités de contact}
+
+On peut définir le nombre d'unités de contact avec le côté inférieur comme ceci :
+$$
+\sum_{\forall i \in k, A(i) = 0} \mathcal{Y}(i)
+$$
+
+De la même manière, on peut exprimer la somme des unités de contact sur les 4 côtés (bas, gauche, haut, droite) :
+
+$$
+\Gamma = \sum_{\forall i \in k, A(i) = 0} \mathcal{Y}(i) +
+\sum_{\forall i \in k, B(i) = 0} \mathcal{X}(i) +
+\sum_{\forall i \in k, A(i) + \mathcal{X}(i) =  n} \mathcal{Y}(i) +
+\sum_{\forall i \in k, B(i) + \mathcal{Y}(i) = m} \mathcal{X}(i)
+$$
+
+Dès lors, on peut rajouter la contrainte $\Gamma \geq p$
+
 \end{document}
