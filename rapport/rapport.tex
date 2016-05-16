@@ -30,12 +30,12 @@
 \subsection{Objectif}
 
 \section{Questions}
-\subsection{Ecrire les contraintes que soit satfisfaire $\mu$}
+\subsection{Écrire les contraintes que soit satisfaire $\mu$}
 
 $\mu$ doit satisfaire les contraintes suivantes :
 
 \begin{itemize}
-  \item Tout rectanlge ne doit pas dépasser du grand rectangle :
+  \item Tout rectangle ne doit pas dépasser du grand rectangle :
   $$\forall i \in k,
   A(i) + \mathcal{X}(i) \leq n
   \land B(i) + \mathcal{Y}(i) \leq m
@@ -54,7 +54,36 @@ $\mu$ doit satisfaire les contraintes suivantes :
 \subsection{Construire une formule $\Phi$ en FNC}
 On commence par expirmer chaque contrainte en FNC :
 \begin{itemize}
-  \item $C_1$ : $$
+  \item $C_1$ : $
+  \bigwedge\limits_{i \in k}
+  A(i) + \mathcal{X}(i) \leq n
+  \land B(i) + \mathcal{Y}(i) \leq m
+  \land A(i) \geq 0
+  \land B(i) \geq 0$
+
+  \item $C_2$ : $
+  \bigwedge\limits_{i \in k} \bigwedge\limits_{j \in k, j \neq i}
+  A(i) + \mathcal{X}(i) \leq  A(j)
+  \lor A(i) \geq A(j) + \mathcal{X}(j)
+  \lor B(i) + \mathcal{Y}(i) \leq  B(j)
+  \lor B(i) \geq B(j) + \mathcal{Y}(j)
+  $
 \end{itemize}
+
+La FNC complète est donc la suivante :
+
+$$ C_1 \land C_2$$
+
+\subsection{Implémenter}
+
+\subsection{Trouver le plus petit carré admettant une solution}
+
+Pour trouver le plus petit carré $R$ admettant une solution au problème, nous regardons d'abord si le carré de côté $n=\sqrt{a}$, $a$ étant la somme des aires des rectangles : $a = \sum_{i \in k} \mathcal{X}(i) \cdot \mathcal{Y}(i)$.
+
+Si le carré de côté $\sqrt{a}$ satisfait le problème, nous nous arrêtons là.
+
+Si il ne le satisfait pas, nous doublons $n$ jusqu'à ce qu'il le satisfasse. A ce moment là, nous avons une borne inférieure ($\frac{n}{2}$) et supérieure ($n$) pour la taille minimale du côté du carré.
+
+A partir de ces deux bornes, nous pouvons faire une recherche dichotomique pour rapprocher celles-ci jusqu'à ce qu'elles soient identiques.
 
 \end{document}
