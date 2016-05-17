@@ -115,7 +115,76 @@ Les propositions sont définies comme suit :
 
 \subsection{Pivotage}
 
+Pour implémenter la résolution avec pivotage, nous rajoutons un vecteur de booléens $R$ avec $R_i$ étant vrai si le rectangle doit être retourné. Nos contraintes deviennent donc :
 
+\begin{itemize}
+  \item $\forall i \in k, C_1$ : soit $i$ ne dépasse pas du grand rectangle ($C_{11}$), soit $i$ est retourné et ne dépasse pas du grand rectangle ($C_{12}$):
+  $$
+  C_{11} : \lnot R_i \land A(i) + \mathcal{X}(i) \leq m
+  \land B(i) + \mathcal{Y}(i) \leq n
+  \land A(i) \geq 0
+  \land B(i) \geq 0
+  $$
+  $$
+  C_{12} : R_i \land A(i) + \mathcal{Y}(i) \leq m
+  \land B(i) + \mathcal{X}(i) \leq n
+  \land A(i) \geq 0
+  \land B(i) \geq 0
+  $$
+  \item $\forall i \in k, \forall j \in k, j\neq i, C_{2}$ : $C_{21} \lor C_{22} \lor C_{23} \lor C_{24}$
+  \begin{itemize}
+    \item $C_{21}$ : $i$ n'est pas supperposé à $j$ :
+    $$
+    \lnot R_i \land \lnot R_j \land
+    A(i) + \mathcal{X}(i) \leq  A(j)
+    \lor A(i) \geq A(j) + \mathcal{X}(j)
+    \lor B(i) + \mathcal{Y}(i) \leq  B(j)
+    \lor B(i) \geq B(j) + \mathcal{Y}(j)
+    $$
+
+    \item $C_{22}$ : $i$ est retourné et n'est pas supperposé à $j$
+    $$
+    R_i \land \lnot R_j \land
+    A(i) + \mathcal{Y}(i) \leq  A(j)
+    \lor A(i) \geq A(j) + \mathcal{X}(j)
+    \lor B(i) + \mathcal{X}(i) \leq  B(j)
+    \lor B(i) \geq B(j) + \mathcal{Y}(j)
+    $$
+
+    \item $C_{24}$ : $i$ n'est pas supperposé à $j$ et $j$ est retourné
+    $$
+    \lnot R_i \land R_j \land
+    A(i) + \mathcal{X}(i) \leq  A(j)
+    \lor A(i) \geq A(j) + \mathcal{Y}(j)
+    \lor B(i) + \mathcal{Y}(i) \leq  B(j)
+    \lor B(i) \geq B(j) + \mathcal{X}(j)
+    $$
+
+    \item $C_{24}$ : $i$ est retourné et n'est pas supperposé à $j$ et $j$ est retounré
+    $$
+    R_i \land R_j \land
+    A(i) + \mathcal{Y}(i) \leq  A(j)
+    \lor A(i) \geq A(j) + \mathcal{Y}(j)
+    \lor B(i) + \mathcal{X}(i) \leq  B(j)
+    \lor B(i) \geq B(j) + \mathcal{X}(j)
+    $$
+  \end{itemize}
+
+  Nous avons donc comme contrainte finale :
+  $$
+  \bigwedge\limits_{i \in k} \Big( C_{11} \lor C_{12} \Big) \land
+  \bigwedge\limits_{i \in k} \bigwedge\limits_{j \in k, j \neq i}
+  \Big( C_{21} \lor C_{22} \lor C_{23} \lor C_{24} \Big)
+  $$
+
+  Que nous pouvons convertir en une suite de clauses $\land$ :
+  $$
+  \bigwedge\limits_{i \in k} \lnot \Big( \lnot C_{11} \land \lnot C_{12} \Big) \land
+  \bigwedge\limits_{i \in k} \bigwedge\limits_{j \in k, j \neq i}
+  \lnot \Big( \lnot C_{21} \land \lnot C_{22} \land \lnot C_{23} \land \lnot C_{24} \Big)
+  $$
+
+\end{itemize}
 
 \subsection{Minimum d'unités de contact}
 
