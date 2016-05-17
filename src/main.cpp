@@ -34,17 +34,10 @@ void solve2D(int k, int n, int m, int *X, int *Y, Solver &s){
     for(int h=0; h<k; h++){
         for(int i=0; i<n; i++){
             for(int j=0; j<m; j++){
-                for(int h2=0; h2<k; h2++){
-                    if(h == h2)
-                        continue;
+                for(int h2=0; h2<h; h2++){
                     for(int i2=max(i-X[h2], 0);i2<n && i2<i+X[h]; i2++){
                         for(int j2=max(j-Y[h2], 0);j2<m && j2<j+Y[h]; j2++){
                             s.addBinary(~Lit(mu[h][i][j]), ~Lit(mu[h2][i2][j2]));
-                            if(h2 == 24 && h == 27){
-                                if(i == 4 && j == 11){
-                                    cout << "i2: " << i2 << " j2: " << j2 << endl;
-                                }
-                            }
                         }
                     }
                 }
