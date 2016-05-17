@@ -5,7 +5,7 @@
 
 using namespace std;
 
-void add_constraint(int k, int n, int m, int *X, int *Y, Solver &s){
+void solveQ1(int k, int n, int m, int *X, int *Y, Solver &s){
     int mu[k][n][m];
     for(int h=0; h<k; h++){
         vec<Lit> solution_exists;
@@ -47,7 +47,7 @@ void add_constraint(int k, int n, int m, int *X, int *Y, Solver &s){
         for(int i=0; i<n; i++){
             for(int j=0; j<m; j++){
                 if(s.model[mu[h][i][j]] == l_True){
-                    cout << "rectangle " << h <<" placé en "<<i<<" "<<j<<endl;
+                    cout << h + 1 <<" "<<i<<" "<<j<<endl;
                 }
             }
         }
@@ -56,10 +56,15 @@ void add_constraint(int k, int n, int m, int *X, int *Y, Solver &s){
 
 int main(){
     Solver s;
-    int k = 3;
-    int m = 4;
-    int n =4;
-    int X[] = {4,2,2};
-    int Y[] = {1,2,3};
-    add_constraint(k, n, m, X,Y, s);
+    int k;
+    int m;
+    int n;
+    cin >> k >> m >> n;
+    int X[k];
+    int Y[k];
+    for(int i =0; i<k; i++){
+        int a;
+        cin >> a >> X[i] >> Y[i];
+    }
+    solveQ1(k, n, m, X,Y, s);
 }
