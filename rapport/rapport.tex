@@ -204,4 +204,23 @@ $$
 
 Dès lors, on peut rajouter la contrainte $\Gamma \geq p$
 
+
+\section{\#newgen}
+
+On définit $\beta_{i, x, y}$ comme le fait que le rectangle $i$ soit présent en position $(x,y)$
+
+On peut expirmer le fait que deux rectangles ne se supperposent pas comme : $$
+\forall x,y , \forall i \in k : \lnot \beta_{i, x, y} \rightarrow
+\lnot \Big( \bigvee_{j \in k, j \neq i} \beta_{j, x, y} \Big)
+$$
+
+L'autre formule \^\^ :
+
+$$
+\forall i \in k \bigvee_{x_1=0}^{n-\mathcal{X}(i)} \bigvee_{y_1=0}^{n-\mathcal{Y}(i)}
+\Big(
+  \bigwedge_{x_2=0}^{\mathcal{X}(i)} \bigwedge_{y_2=0}^{\mathcal{Y}(i)} \beta_{i, x_1 + x_2, y_1 + y_2}
+\Big)
+$$
+
 \end{document}
