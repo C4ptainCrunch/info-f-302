@@ -86,10 +86,12 @@ def show_solution_swap(inp, out):
     for (id, h, w, swap) in places:
         if int(swap):
             base_w, base_h = rect[id]
+            color = 'blue'
         else:
             base_h, base_w = rect[id]
+            color = 'red'
 
-        pa = patches.PathPatch(draw_rect([h, w],[base_h, base_w]), facecolor='red', lw=2, alpha=0.4)
+        pa = patches.PathPatch(draw_rect([h, w],[base_h, base_w]), facecolor=color, lw=2, alpha=0.4)
         ax.add_patch(pa)
         ax.text(w + 0.2, h + 0.2, str(id), fontsize=10)
 
