@@ -1,4 +1,4 @@
-CXXFLAGS = -g
+CXXFLAGS = -ggdb
 TARGET = solver
 LDFLAGS = -lm
 
