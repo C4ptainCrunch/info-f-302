@@ -130,7 +130,7 @@ void Solve2DRetournement(int k, int n, int m, int *X, int *Y){
     }
 
     s.solve();
-    cout << s.okay() << endl;
+    cerr << s.okay() << endl;
     if(s.okay()){
         for(int i =0; i<k; i++){
             for(int x=0; x<n; x++){
@@ -196,7 +196,7 @@ void solve3D(int k, int n, int m, int o, int *X, int *Y, int *Z){
     }
 
     s.solve();
-    cout << s.okay() << endl;
+    cerr << s.okay() << endl;
     if(s.okay()){
         for(int i =0; i<k; i++){
             for(int x=0; x<n; x++){
