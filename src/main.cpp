@@ -50,7 +50,10 @@ void Solve2D(int k, int n, int m, int *X, int *Y){
         }
     }
 
-    s.solve();
+    if(!s.solve() || !s.okay()){
+        cout << 0 << endl;
+        exit(42);
+    }
     cerr << s.okay() << endl;
     if(s.okay()){
         for(int i =0; i<k; i++){
@@ -129,7 +132,10 @@ void Solve2DRetournement(int k, int n, int m, int *X, int *Y){
         }
     }
 
-    s.solve();
+    if(!s.solve() || !s.okay()){
+        cout << 0 << endl;
+        exit(42);
+    }
     cerr << s.okay() << endl;
     if(s.okay()){
         for(int i =0; i<k; i++){
@@ -195,7 +201,10 @@ void solve3D(int k, int n, int m, int o, int *X, int *Y, int *Z){
         }
     }
 
-    s.solve();
+    if(!s.solve() || !s.okay()){
+        cout << 0 << endl;
+        exit(42);
+    }
     cerr << s.okay() << endl;
     if(s.okay()){
         for(int i =0; i<k; i++){
