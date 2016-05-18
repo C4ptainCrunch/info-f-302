@@ -57,6 +57,66 @@ void solve2D(int k, int n, int m, int *X, int *Y, Solver &s){
         }
     }   
 }
+
+void newSolve2D(int k, int n, int m, int *X, int *Y){
+    Solver s;
+    int mu[k][n][m][2];
+    for(int i=0; i<k; i++){
+        for(int x=0; x<n; x++){
+            for(int y=0; y<m; y++){
+                mu[i][x][y][0] = s.newVar();
+                mu[i][x][y][1] = s.newVar();
+            }
+        }
+    }
+
+    for(int i=0; i<k; i++){
+        vec<Lit> solution_exists;
+        for(int x0=0; x0<=n-X[i]; x0++){
+            for(int y0=0; y0<=m-Y[i]; y0++){
+                solution_exists.push(Lit(mu[i][x0][y0][0]));
+                for(int x1=0; x1<n; x1++){
+                    for(int y1=0; y1<m; y1++){
+                        if(x0<=x1 && x1<(x0+X[i]) && y0 <= y1 && y1<(y0+Y[i])){
+                            s.addBinary(~Lit(mu[i][x0][y0][0]), Lit(mu[i][x1][y1][1]));
+                        }
+                    }
+                }
+            }
+        }
+        s.addClause(solution_exists);
+    }
+
+    for(int i=0; i<k; i++){
+        for(int j=0; j<k; j++){
+            if(i == j)
+                continue;
+            for(int x=0; x<n; x++){
+                for(int y=0; y<m; y++){
+                    s.addBinary(~Lit(mu[i][x][y][1]), ~Lit(mu[j][x][y][1]));
+                }
+            }
+        }
+    }
+
+    s.solve();
+    cout << s.okay() << endl;
+    if(s.okay()){
+        for(int i =0; i<k; i++){
+            for(int x=0; x<n; x++){
+                for(int y=0; y<m; y++){
+                    if(s.model[mu[i][x][y][0]] == l_True){
+                        cout << ""<< i + 1 <<" "<<x<<" "<<y<<endl;
+                    }
+                    if(s.model[mu[i][x][y][1]] == l_True){
+                       // cout << "r: "<< i + 1 <<" "<<x<<" "<<y<<endl;
+                    }
+                }
+            }
+        }   
+    }
+}
+
 void solve3D(int k, int n, int m, int p, int *X, int *Y, int *Z, Solver &s){
     int mu[k][n][m][p];
     for(int h=0; h<k; h++){
@@ -110,7 +170,8 @@ int main(){
         int a;
         cin >> a >> X[i] >> Y[i];
     }
-    solve2D(k, n, m, X,Y, s);
+    //solve2D(k, n, m, X,Y, s);
+    newSolve2D(k, n, m, X,Y);
     //k =4;
     //m = 3;
     //n=3;
