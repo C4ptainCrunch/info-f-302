@@ -7,6 +7,7 @@
 \usepackage{hyperref}
 \usepackage{amssymb}
 \usepackage{upgreek}
+\usepackage{amsmath}
 
 \title{
     Orthogonal Packing\\
@@ -284,7 +285,7 @@ FNC :
   \bigwedge_{i \in k}
   \bigwedge_{x=0}^{n - \mathcal{X}(i)} \bigwedge_{y=0}^{m - \mathcal{Y}(i)}
   \bigwedge_{x'=0}^{\mathcal{X}(i)} \bigwedge_{y'=0}^{\mathcal{Y}(i)}
-  \Big( (\lnot \gamma_{i, x, y}) \lor \beta_{i, x', y'} \Big)
+  \Big( (\lnot \gamma_{i, x, y}) \lor \beta_{i, x+x', y+y'} \Big)
   $
 
   \item $
@@ -292,12 +293,68 @@ FNC :
   $
 
   \item $
-  \bigvee_{i \in k}
-  \bigvee_{x=0}^{n - \mathcal{X}(i)} \bigvee_{y=0}^{m - \mathcal{Y}(i)}
-  \bigvee_{x'=0, x\neq x'}^{n - \mathcal{X}(i)} \bigvee_{y'=0, y\neq y'}^{m - \mathcal{Y}(i)}
-  \Big( (\lnot \gamma_{i, x, y}) \lor \not \gamma_{i, x', y'} \Big)
+  \bigwedge_{i \in k}
+  \bigwedge_{x=0}^{n - \mathcal{X}(i)} \bigwedge_{y=0}^{m - \mathcal{Y}(i)}
+  \bigwedge_{x'=0, x\neq x'}^{n - \mathcal{X}(i)} \bigwedge_{y'=0, y\neq y'}^{m - \mathcal{Y}(i)}
+  \Big( (\lnot \gamma_{i, x, y}) \lor \lnot \gamma_{i, x', y'} \Big)
   $
+
 \end{enumerate}
 
+La 5 n'est pas nécéssaire, si un carré est posé à plusieurs politions, on peut prendre la première et ne pas s'occuper des autres.
+
+
+Retournement  :
+
+On ajoute $R(i)$
+
+
+$$
+\forall i \in k,
+\forall x \in [0, n] , y \in [0, m],
+x' \in [0, \mathcal{X}(i)], y' \in [0, \mathcal{Y}(i)] : C_1 \lor C_2
+$$
+
+$$
+C_1 : \Big(
+\gamma_{i, x, y} \land \lnot R(i)
+\land (x + \mathcal{X}(i) \leq n)
+\land (y + \mathcal{Y}(i) \leq m)
+\Big)
+\rightarrow \beta_{i, x + x', y + y'}
+$$
+
+$$
+C_2 : \Big(
+\gamma_{i, x, y} \land R(i)
+\land (x + \mathcal{Y}(i) \leq n)
+\land (y + \mathcal{X}(i) \leq m)
+\Big)
+\rightarrow \beta_{i, x + y', y + x'}
+$$
+
+En FNC :
+
+$$
+\bigwedge_{i \in k}
+\bigwedge_{x=0}^{n} \bigwedge_{y=0}^{m}
+\bigwedge_{x'=0}^{\mathcal{X}(i)} \bigwedge_{y'=0}^{\mathcal{Y}(i)} C_1 \lor C_2
+$$
+
+$$
+C_1 :
+\lnot \gamma_{i, x, y} \lor R(i)
+\lor \lnot (x + \mathcal{X}(i) \leq n)
+\lor \lnot (y + \mathcal{Y}(i) \leq m)
+\lor \beta_{i, x + x', y + y'}
+$$
+
+$$
+C_2 :
+\lnot \gamma_{i, x, y} \lor \lnot R(i)
+\lor \lnot (x + \mathcal{Y}(i) \leq n)
+\lor \lnot (y + \mathcal{X}(i) \leq m)
+\lor \beta_{i, x + y', y + x'}
+$$
 
 \end{document}
