@@ -30,6 +30,8 @@ def set_ticks_and_grid(ax, m, n):
     ax.set_xticks(minor_ticks, minor=True)
     ax.set_yticks(major_ticks)
     ax.set_yticks(minor_ticks, minor=True)
+    ax.set_xlabel('y')
+    ax.set_ylabel('x')
 
     ax.grid(which='minor', alpha=0.7)
     ax.grid(which='major', alpha=1)
@@ -119,7 +121,7 @@ def show_solution_3D(inp, out):
                 ax.add_patch(pa)
                 ax.text(w + 0.2, h + 0.2, str(id), fontsize=10)
 
-        ax.set_title("Couche %i" %couche)
+        ax.set_title("Couche z %i" %couche)
 
     plt.show()
 
