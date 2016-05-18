@@ -83,30 +83,34 @@ void Solve2DRetournement(int k, int n, int m, int *X, int *Y){
         vec<Lit> solution_exists;
         for(int x0=0; x0<n; x0++){
             for(int y0=0; y0<m; y0++){
-                for(int x1=0; x1<n; x1++){
-                    for(int y1=0; y1<m; y1++){
-                        if(x0<=n-X[i] && y0<=m-Y[i]){
+                if(x0<=n-X[i] && y0<=m-Y[i]){
+                    for(int x1=0; x1<n; x1++){
+                        for(int y1=0; y1<m; y1++){
                             if(x0<=x1 && x1<(x0+X[i]) && y0 <= y1 && y1<(y0+Y[i])){
                                 s.addTernary(~Lit(mu[i][x0][y0][0]), Lit(R[i]), Lit(mu[i][x1][y1][1]));
                             } else {
                                 s.addTernary(~Lit(mu[i][x0][y0][0]), Lit(R[i]), ~Lit(mu[i][x1][y1][1]));
                             }
-                        } else {
-                            s.addBinary(~Lit(mu[i][x0][y0][0]), Lit(R[i]));
                         }
-                        if(x0<=n-Y[i] && y0<=m-X[i]){
+                    }
+                } else {
+                    s.addBinary(~Lit(mu[i][x0][y0][0]), Lit(R[i]));
+                }
+                if(x0<=n-Y[i] && y0<=m-X[i]){
+                    for(int x1=0; x1<n; x1++){
+                        for(int y1=0; y1<m; y1++){
                             if(x0<=x1 && x1<(x0+Y[i]) && y0 <= y1 && y1<(y0+X[i])){
                                 s.addTernary(~Lit(mu[i][x0][y0][0]), ~Lit(R[i]), Lit(mu[i][x1][y1][1]));
                             } else{
                                 s.addTernary(~Lit(mu[i][x0][y0][0]), ~Lit(R[i]), ~Lit(mu[i][x1][y1][1]));
                             }
-                        } else {
-                            s.addBinary(~Lit(mu[i][x0][y0][0]), ~Lit(R[i]));
-                        }
-                        if((x0<=n-Y[i] && y0<=m-X[i])||(x0<=n-X[i] && y0<=m-Y[i])){
-                            solution_exists.push(Lit(mu[i][x0][y0][0]));
                         }
                     }
+                } else {
+                    s.addBinary(~Lit(mu[i][x0][y0][0]), ~Lit(R[i]));
+                }
+                if((x0<=n-Y[i] && y0<=m-X[i])||(x0<=n-X[i] && y0<=m-Y[i])){
+                    solution_exists.push(Lit(mu[i][x0][y0][0]));
                 }
             }
         }
