@@ -51,7 +51,7 @@ void Solve2D(int k, int n, int m, int *X, int *Y){
     }
 
     s.solve();
-    cout << s.okay() << endl;
+    cerr << s.okay() << endl;
     if(s.okay()){
         for(int i =0; i<k; i++){
             for(int x=0; x<n; x++){
@@ -61,7 +61,7 @@ void Solve2D(int k, int n, int m, int *X, int *Y){
                     }
                 }
             }
-        }   
+        }
     }
 }
 
@@ -140,7 +140,7 @@ void Solve2DRetournement(int k, int n, int m, int *X, int *Y){
                     }
                 }
             }
-        }   
+        }
     }
 }
 
@@ -207,32 +207,63 @@ void solve3D(int k, int n, int m, int o, int *X, int *Y, int *Z){
                         }
                     }
                 }
-            }   
+            }
         }
     }
 }
 
-int main(){
-    Solver s;
-    int k;
-    int m;
-    int n;
-    cin >> k >> m >> n;
-    int X[k];
-    int Y[k];
-    for(int i =0; i<k; i++){
-        int a;
-        cin >> a >> X[i] >> Y[i];
+int main(int argc, char *argv[]){
+    char mode = '2';
+    if(argc > 1){
+        if(argv[1][0] == '-') {
+            if(argv[1][1] == '2'){
+                mode = '2';
+            } else if (argv[1][1] == '3'){
+                mode = '3';
+            } else if (argv[1][1] == 'r'){
+                mode = 'r';
+            }
+        }
     }
 
-    Solve2D(k, n, m, X,Y);
-    Solve2DRetournement(k, n, m, X,Y);
-    k =4;
-    m = 3;
-    n=3;
-    int o = 3;
-    int X2[] = {1,2,2,1};
-    int Y2[] = {3,2,1,2};
-    int Z2[] = {3,2,2,1};
-    solve3D(k, n, m, o, X2, Y2, Z2);
+    if(mode == '2'){
+        cout << "| Solving in base mode" << endl;
+        Solver s;
+        int k;
+        int m;
+        int n;
+        cin >> k >> m >> n;
+        int X[k];
+        int Y[k];
+        for(int i =0; i<k; i++){
+            int a;
+            cin >> a >> X[i] >> Y[i];
+        }
+
+        Solve2D(k, n, m, X,Y);
+    } else if(mode == 'r'){
+        cout << "| Solving in swap mode" << endl;
+        Solver s;
+        int k;
+        int m;
+        int n;
+        cin >> k >> m >> n;
+        int X[k];
+        int Y[k];
+        for(int i =0; i<k; i++){
+            int a;
+            cin >> a >> X[i] >> Y[i];
+        }
+        Solve2DRetournement(k, n, m, X,Y);
+    } else if (mode == '3') {
+        cout << "| Solving in 3D mode" << endl;
+        int k = 4;
+        int m = 3;
+        int n = 3;
+        int o = 3;
+        int X2[] = {1,2,2,1};
+        int Y2[] = {3,2,1,2};
+        int Z2[] = {3,2,2,1};
+        solve3D(k, n, m, o, X2, Y2, Z2);
+    }
 }
