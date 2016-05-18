@@ -269,4 +269,35 @@ Maths :
   $
 \end{enumerate}
 
+
+
+FNC :
+\begin{enumerate}
+  \item On remarque que la règle 1 est comprise dans la règle 3 grâce à un judicieux choix des bornes, nous n'en avons donc plus besoin
+
+  \item $
+  \bigwedge_{i \in k} \bigwedge_{j \in k, i \neq j} \bigwedge_{x=0}^{n} \bigwedge_{y=0}^{m}
+  \Big( (\lnot \beta_{i, x, y}) \lor \beta_{j, x, y} \Big)
+  $
+
+  \item $
+  \bigwedge_{i \in k}
+  \bigwedge_{x=0}^{n - \mathcal{X}(i)} \bigwedge_{y=0}^{m - \mathcal{Y}(i)}
+  \bigwedge_{x'=0}^{\mathcal{X}(i)} \bigwedge_{y'=0}^{\mathcal{Y}(i)}
+  \Big( (\lnot \gamma_{i, x, y}) \lor \beta_{i, x', y'} \Big)
+  $
+
+  \item $
+  \bigwedge_{i \in k} \bigvee_{x=0}^{\mathcal{X}(i)} \bigvee_{y=0}^{\mathcal{Y}(i)} \gamma_{i, x, y}
+  $
+
+  \item $
+  \bigvee_{i \in k}
+  \bigvee_{x=0}^{n - \mathcal{X}(i)} \bigvee_{y=0}^{m - \mathcal{Y}(i)}
+  \bigvee_{x'=0, x\neq x'}^{n - \mathcal{X}(i)} \bigvee_{y'=0, y\neq y'}^{m - \mathcal{Y}(i)}
+  \Big( (\lnot \gamma_{i, x, y}) \lor \not \gamma_{i, x', y'} \Big)
+  $
+\end{enumerate}
+
+
 \end{document}
