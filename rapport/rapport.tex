@@ -214,7 +214,7 @@ On peut expirmer le fait que deux rectangles ne se supperposent pas comme : $$
 \lnot \Big( \bigvee_{j \in k, j \neq i} \beta_{j, x, y} \Big)
 $$
 
-L'autre formule \^\^ :
+L'autre formule :
 
 $$
 \forall i \in k \bigvee_{x_1=0}^{n-\mathcal{X}(i)} \bigvee_{y_1=0}^{n-\mathcal{Y}(i)}
@@ -228,5 +228,45 @@ Pas de flottants : (on défini $\gamma_{x, y , z}$ comme étant le fait qu'il y 
 $$
 \forall x,y,z : \gamma_{x, y, z} \rightarrow  \Big( \gamma_{x, y, z - 1}  \lor x = 0 \Big)
 $$
+
+
+\section{\#newgen$^{2}$}
+
+Règles :
+\begin{enumerate}
+  \item Un rectangle ne peut être placé hors du grand rectangle
+  \item Deux rectangles ne peuvent pas se supperposer
+  \item Le fait qu'un bloc commence à une position implique que toutes les positions ``suivantes'' soient occupées par ce même bloc
+  \item Chaque bloc doit être placé au moins une fois
+  \item Chaque bloc doit être placé au maximum une fois
+\end{enumerate}
+
+Définitions :
+\begin{enumerate}
+  \item $\beta_{i, x, y}$ : le fait que le bloc $i$ occupe la case $(x,y)$
+  \item $\gamma_{i, x, y}$ : le fait que le bloc $i$ commence à la case $(x,y)$
+\end{enumerate}
+
+Maths :
+\begin{enumerate}
+  \item $\forall i \in k$ : $A(i) \geq 0$ et $B(i) \geq 0$ et $A(i) + \mathcal{X}(i) \leq n$ et $B(i) + \mathcal{Y}(i)\leq m$
+
+  \item $\forall i,j \in k, i \neq j, \forall x \in [0,n], y \in [0,m] : \beta_{i, x, y} \rightarrow \lnot \beta_{j, x, y}$
+
+  \item $
+  \forall i \in k,
+  \forall x \in [0, n - \mathcal{X}(i)] , y \in [0, m - \mathcal{Y}(i)],
+    x' \in [0, \mathcal{X}(i)], y' \in [0, \mathcal{Y}(i)] : \gamma_{i, x, y} \rightarrow \beta_{i, x', y'}
+  $
+
+  \item $\forall i \in k, \exists x \in  [0, n - \mathcal{X}(i)], y \in [0, m - \mathcal{Y}(i)] : \gamma_{i, x, y}$
+  \item $
+  \forall i \in k,
+  \forall x,x' \in [0, n - \mathcal{X}(i)],
+  \forall y,y' \in [0, m - \mathcal{Y}(i)],
+  x \neq x', y \neq y' :
+  \gamma_{i, x, y} \rightarrow \lnot \gamma_{i, x', y'}
+  $
+\end{enumerate}
 
 \end{document}
