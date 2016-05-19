@@ -19,236 +19,38 @@
 }
 \date{20 mai 2016}
 
+\linespread{1.1}
 
+\setlength{\parskip}{0.5em}
 
 \begin{document}
 \maketitle
 \tableofcontents
 
-\section{\'Enonc\'e}
-\subsection{Définitions}
+\section{Introduction}
 
-\subsection{Objectif}
+Nous définissons les symboles suivants :
+\begin{itemize}
+  \item $\mu(i) = (A(i), B(i))$ ou en 3D, $\mu(i) = (A(i), B(i), C(i))$
+  \item $\beta_{i, x, y}$ : le fait que le rectangle $i$ contienne le point $(x, y)$ (ou en 3D, $\beta_{i, x, y, z}$ qui contient $(x, y, z)$)
+  \item $\gamma_{i, x, y}$ : le fait que $\mu(i) = (x, y)$ ou en 3D, $\gamma_{i, x, y} \rightarrow \mu(i) = (x, y, z)$
+  \item Dans la question sur les pivotages, $R(i)$ veut dire que le rectangle $i$ est pivoté, $\lnot R(i)$, qu'il n'est pas pivoté
+\end{itemize}
 
 \section{Questions}
 \subsection{Écrire les contraintes que soit satisfaire $\mu$}
 
-$\mu$ doit satisfaire les contraintes suivantes :
-
-\begin{itemize}
-  \item Tout rectangle ne doit pas dépasser du grand rectangle :
-  $$\forall i \in k,
-  A(i) + \mathcal{X}(i) \leq m
-  \land B(i) + \mathcal{Y}(i) \leq n
-  \land A(i) \geq 0
-  \land B(i) \geq 0$$
-
-  \item Deux rectangles ne peuvent pas se superposer :
-  $$\forall i, \forall j, \neq i,
-  A(i) + \mathcal{X}(i) \leq  A(j)
-  \lor A(i) \geq A(j) + \mathcal{X}(j)
-  \lor B(i) + \mathcal{Y}(i) \leq  B(j)
-  \lor B(i) \geq B(j) + \mathcal{Y}(j)
-  $$
-\end{itemize}
-
-\subsection{Construire une formule $\Phi$ en FNC}
-On commence par exprimer chaque contrainte en FNC :
-\begin{itemize}
-  \item $C_1$ : $
-  \bigwedge\limits_{i \in k}
-  A(i) + \mathcal{X}(i) \leq m
-  \land B(i) + \mathcal{Y}(i) \leq n
-  \land A(i) \geq 0
-  \land B(i) \geq 0$
-
-  \item $C_2$ : $
-  \bigwedge\limits_{i \in k} \bigwedge\limits_{j \in k, j \neq i}
-  A(i) + \mathcal{X}(i) \leq  A(j)
-  \lor A(i) \geq A(j) + \mathcal{X}(j)
-  \lor B(i) + \mathcal{Y}(i) \leq  B(j)
-  \lor B(i) \geq B(j) + \mathcal{Y}(j)
-  $
-\end{itemize}
-
-La FNC complète est donc la suivante :
-
-$$ C_1 \land C_2$$
-
-\subsection{Implémenter}
-
-\subsection{Trouver le plus petit carré admettant une solution}
-
-Pour trouver le plus petit carré $R$ admettant une solution au problème, nous regardons d'abord si le carré de côté $n=\sqrt{a}$, $a$ étant la somme des aires des rectangles : $a = \sum_{i \in k} \mathcal{X}(i) \cdot \mathcal{Y}(i)$.
-
-Si le carré de côté $\sqrt{a}$ satisfait le problème, nous nous arrêtons là.
-
-Si il ne le satisfait pas, nous doublons $n$ jusqu'à ce qu'il le satisfasse. A ce moment là, nous avons une borne inférieure ($\frac{n}{2}$) et supérieure ($n$) pour la taille minimale du côté du carré.
-
-A partir de ces deux bornes, nous pouvons faire une recherche dichotomique pour rapprocher celles-ci jusqu'à ce qu'elles soient identiques.
-
-\subsection{Étant donné $n$, trouver la dimension du plus petit carré contenant les carrés $\{r_1 \ldots r_n \}$}
-
-Nous pouvons considérer que ce problème est un cas particulier du précédent et par conséquent le résoudre de la même manière.
-
-\subsection{Ajouter une 3ème dimension}
-
-\subsubsection{Implémenter}
-\subsubsection{Plus petite dimension du cube admettant une solution}
-
-\subsection{Empêcher un pavé de ``flotter''}
-Nous pouvons la rajouter la contrainte suivante : Soit le pavé est au sol, soit la base du pavé doit être au même $z$ que le sommet d'un autre ($C_1$) et vu d'en haut, la base du premier doit intersecter avec le sommet de l'autre ($C_2$) :
-
-$$\forall i \in k, \exists j \in k, (C_1 \land C_2) \lor C(i) = 0$$
-
-Les propositions sont définies comme suit :
-\begin{itemize}
-  \item $C_1$ :
-  $
-  C(j) + \mathcal{Z}(j) = C(i)
-  $
-  \item $C_2$ : $C_{21} \land C_{22}$ avec :
-  \begin{itemize}
-    \item $C_{21}$ : $A(i) \geq A(j) \land A(i) + \mathcal{X}(i) \leq A(j) + \mathcal{X}(j)$
-    \item $C_{22}$ : $B(i) \geq B(j) \land B(i) + \mathcal{Y}(i) \leq B(j) + \mathcal{Y}(j)$
-  \end{itemize}
-\end{itemize}
-
-\subsection{Pivotage}
-
-Pour implémenter la résolution avec pivotage, nous rajoutons un vecteur de booléens $R$ avec $R_i$ étant vrai si le rectangle doit être retourné. Nos contraintes deviennent donc :
-
-\begin{itemize}
-  \item $\forall i \in k, C_1$ : soit $i$ ne dépasse pas du grand rectangle ($C_{11}$), soit $i$ est retourné et ne dépasse pas du grand rectangle ($C_{12}$):
-  $$
-  C_{11} : \lnot R_i \land A(i) + \mathcal{X}(i) \leq m
-  \land B(i) + \mathcal{Y}(i) \leq n
-  \land A(i) \geq 0
-  \land B(i) \geq 0
-  $$
-  $$
-  C_{12} : R_i \land A(i) + \mathcal{Y}(i) \leq m
-  \land B(i) + \mathcal{X}(i) \leq n
-  \land A(i) \geq 0
-  \land B(i) \geq 0
-  $$
-  \item $\forall i \in k, \forall j \in k, j\neq i, C_{2}$ : $C_{21} \lor C_{22} \lor C_{23} \lor C_{24}$
-  \begin{itemize}
-    \item $C_{21}$ : $i$ n'est pas supperposé à $j$ :
-    $$
-    \lnot R_i \land \lnot R_j \land
-    A(i) + \mathcal{X}(i) \leq  A(j)
-    \lor A(i) \geq A(j) + \mathcal{X}(j)
-    \lor B(i) + \mathcal{Y}(i) \leq  B(j)
-    \lor B(i) \geq B(j) + \mathcal{Y}(j)
-    $$
-
-    \item $C_{22}$ : $i$ est retourné et n'est pas supperposé à $j$
-    $$
-    R_i \land \lnot R_j \land
-    A(i) + \mathcal{Y}(i) \leq  A(j)
-    \lor A(i) \geq A(j) + \mathcal{X}(j)
-    \lor B(i) + \mathcal{X}(i) \leq  B(j)
-    \lor B(i) \geq B(j) + \mathcal{Y}(j)
-    $$
-
-    \item $C_{24}$ : $i$ n'est pas supperposé à $j$ et $j$ est retourné
-    $$
-    \lnot R_i \land R_j \land
-    A(i) + \mathcal{X}(i) \leq  A(j)
-    \lor A(i) \geq A(j) + \mathcal{Y}(j)
-    \lor B(i) + \mathcal{Y}(i) \leq  B(j)
-    \lor B(i) \geq B(j) + \mathcal{X}(j)
-    $$
-
-    \item $C_{24}$ : $i$ est retourné et n'est pas supperposé à $j$ et $j$ est retounré
-    $$
-    R_i \land R_j \land
-    A(i) + \mathcal{Y}(i) \leq  A(j)
-    \lor A(i) \geq A(j) + \mathcal{Y}(j)
-    \lor B(i) + \mathcal{X}(i) \leq  B(j)
-    \lor B(i) \geq B(j) + \mathcal{X}(j)
-    $$
-  \end{itemize}
-
-  Nous avons donc comme contrainte finale :
-  $$
-  \bigwedge\limits_{i \in k} \Big( C_{11} \lor C_{12} \Big) \land
-  \bigwedge\limits_{i \in k} \bigwedge\limits_{j \in k, j \neq i}
-  \Big( C_{21} \lor C_{22} \lor C_{23} \lor C_{24} \Big)
-  $$
-
-  Que nous pouvons convertir en une suite de clauses $\land$ :
-  $$
-  \bigwedge\limits_{i \in k} \lnot \Big( \lnot C_{11} \land \lnot C_{12} \Big) \land
-  \bigwedge\limits_{i \in k} \bigwedge\limits_{j \in k, j \neq i}
-  \lnot \Big( \lnot C_{21} \land \lnot C_{22} \land \lnot C_{23} \land \lnot C_{24} \Big)
-  $$
-
-\end{itemize}
-
-\subsection{Minimum d'unités de contact}
-
-On peut définir le nombre d'unités de contact avec le côté inférieur comme ceci :
-$$
-\sum_{\forall i \in k, A(i) = 0} \mathcal{Y}(i)
-$$
-
-De la même manière, on peut exprimer la somme des unités de contact sur les 4 côtés (bas, gauche, haut, droite) :
-
-$$
-\Gamma = \sum_{\forall i \in k, A(i) = 0} \mathcal{Y}(i) +
-\sum_{\forall i \in k, B(i) = 0} \mathcal{X}(i) +
-\sum_{\forall i \in k, A(i) + \mathcal{X}(i) =  n} \mathcal{Y}(i) +
-\sum_{\forall i \in k, B(i) + \mathcal{Y}(i) = m} \mathcal{X}(i)
-$$
-
-Dès lors, on peut rajouter la contrainte $\Gamma \geq p$
-
-
-\section{\#newgen}
-
-On définit $\beta_{i, x, y}$ comme le fait que le rectangle $i$ soit présent en position $(x,y)$
-
-On peut expirmer le fait que deux rectangles ne se supperposent pas comme : $$
-\forall x,y , \forall i \in k : \beta_{i, x, y} \rightarrow
-\lnot \Big( \bigvee_{j \in k, j \neq i} \beta_{j, x, y} \Big)
-$$
-
-L'autre formule :
-
-$$
-\forall i \in k \bigvee_{x_1=0}^{n-\mathcal{X}(i)} \bigvee_{y_1=0}^{n-\mathcal{Y}(i)}
-\Big(
-  \bigwedge_{x_2=0}^{\mathcal{X}(i)} \bigwedge_{y_2=0}^{\mathcal{Y}(i)} \beta_{i, x_1 + x_2, y_1 + y_2}
-\Big)
-$$
-
-
-Pas de flottants : (on défini $\gamma_{x, y , z}$ comme étant le fait qu'il y aie un bloc en $(x, y , z)$)
-$$
-\forall x,y,z : \gamma_{x, y, z} \rightarrow  \Big( \gamma_{x, y, z - 1}  \lor x = 0 \Big)
-$$
-
-
-\section{\#newgen$^{2}$}
-
-Règles :
+On peut commencer par énoncer en français les contraintes à respecter :
 \begin{enumerate}
   \item Un rectangle ne peut être placé hors du grand rectangle
-  \item Deux rectangles ne peuvent pas se supperposer
-  \item Le fait qu'un bloc commence à une position implique que toutes les positions ``suivantes'' soient occupées par ce même bloc
-  \item Chaque bloc doit être placé au moins une fois
-  \item Chaque bloc doit être placé au maximum une fois
+  \item Deux rectangles ne peuvent pas se superposer
+  \item Le fait qu'un rectangle commence à une position implique que toutes les positions ``suivantes'' soient occupées par ce même rectangle
+  \item Chaque rectangle doit être placé au moins une fois
+  \item Chaque rectangle doit être placé au maximum une fois
 \end{enumerate}
+\vspace{1em}
 
-Définitions :
-\begin{enumerate}
-  \item $\beta_{i, x, y}$ : le fait que le bloc $i$ occupe la case $(x,y)$
-  \item $\gamma_{i, x, y}$ : le fait que le bloc $i$ commence à la case $(x,y)$
-\end{enumerate}
-
-Maths :
+On peut ensuite les formaliser mathématiquement :
 \begin{enumerate}
   \item $\forall i \in k$ : $A(i) \geq 0$ et $B(i) \geq 0$ et $A(i) + \mathcal{X}(i) \leq n$ et $B(i) + \mathcal{Y}(i)\leq m$
 
@@ -270,11 +72,10 @@ Maths :
   $
 \end{enumerate}
 
-
-
-FNC :
+\subsection{Construire une formule $\Phi$ en FNC}
+On commence par exprimer chaque contrainte de la question précédente en FNC :
 \begin{enumerate}
-  \item On remarque que la règle 1 est comprise dans la règle 3 grâce à un judicieux choix des bornes, nous n'en avons donc plus besoin
+  \item On remarque que la règle 1 est comprise dans la règle 3 grâce à un judicieux choix des bornes, nous n'en avons donc plus besoin.
 
   \item $
   \bigwedge_{i \in k} \bigwedge_{j \in k, i \neq j} \bigwedge_{x=0}^{n} \bigwedge_{y=0}^{m}
@@ -300,14 +101,89 @@ FNC :
   $
 
 \end{enumerate}
+\vspace{1em}
 
-La 5 n'est pas nécéssaire, si un carré est posé à plusieurs politions, on peut prendre la première et ne pas s'occuper des autres.
+La FNC complète est la conjonction des 4 formules ci dessus.
+
+Cependant, nous pouvons omettre la 5ème contrainte. En effet, cela ne nous pose pas problème qu'un rectangle soit posé à plusieurs endroits en même temps. Il suffit que notre programme ne garde que la première position qui a été trouvée pour chaque rectangle et ne s'occupe pas des autres.
+
+\subsection{Implémenter}
+
+Implémenter et tester sur les exemples 1 et 2, et proposer éventuellement
+d’autres exemples.
+
+\subsection{Trouver le plus petit carré admettant une solution}
+
+\paragraph{Méthode initiale} Premièrement, nous avons essayé d'implémenter une solution ne devant faire tourner qu'une seule fois le solveur SAT.
+Pour cela, nous générons un problème comme ceci :
+
+``Résoudre l'orthogonal packing dans un grand rectangle de largeur $n$ et le longueur $n$'' avec $n$ défini comme $max(\sum_{i \in k} \mathcal{X}(i), \sum_{i \in k} \mathcal{Y}(i))$.
+
+Nous savons que ce problème est satisfaisable : il suffit d’empiler les rectangles les uns au dessus des autres.
+
+Nous définissions $\pi_h$ comme le fait qu'il y aie une case qui est occupée par un rectangle et appartenant au carré de largeur $h$ mais pas au carré de largeur $h-1$ ou que $\pi_{h+1}$ soit vrai.
+$$
+  \Big(
+    (\exists i \in k, x \in [0, n]: \beta_{i, x, h})
+    \lor (\exists i \in k, y \in [0, n]: \beta_{i, h, y})
+    \lor \pi_{h+1}
+    \Big)
+    \rightarrow \pi_h
+$$
+
+Cette implication peut être simplifiée par la somme de ces deux ci :
+\begin{itemize}
+  \item $\forall i \in k, x \in [0,n], y \in [0,n] :\beta_{i, x, y} \rightarrow \pi_{max(x,y)}$
+  \item $\forall h \in [0, n]: \pi_h \rightarrow \pi_{h-1}$
+\end{itemize}
+\vspace{1em}
 
 
-Retournement  :
+Il suffira ensuite de trouver $h$ le plus petit tel que $\lnot \pi_{h}$ pour savoir qu'il est possible de rentrer tous les rectangles dans un carré de côté $h$. Malheureusement, cette méthode nous donne uniquement un $h$ qui est satisfaisable et non pas le plus petit $h$ possible.
 
-On ajoute $R(i)$
+Pour minimiser ce $h$, nous pouvons utiliser MAX-SAT pour essayer de satisfaire le plus de contraintes $\lnot \pi_h$ (avec $h \in [0, n]$) possible. Cependant, il semble que la question ne demande pas d'utiliser MAX-SAT. Nous n'avons donc pas utilisé cette méthode.
 
+\paragraph{Méthode retenue} Méthode que nous avons finalement retenue est la suivante :
+
+Pour trouver le plus petit carré $R$ admettant une solution au problème, nous regardons d'abord si le carré de côté $n=\sqrt{a}$, $a$ étant la somme des aires des rectangles : $a = \sum_{i \in k} \mathcal{X}(i) \cdot \mathcal{Y}(i)$ est satisfaisable.
+
+Si le carré de côté $\sqrt{a}$ satisfait le problème, nous nous arrêtons là, nous avons trouvé le plus petit carré possible (plus petit, son aire serait inférieure à la somme des aires des rectangles).
+
+Si il ne le satisfait pas, nous doublons $n$ jusqu'à ce qu'il le satisfasse. A ce moment là, nous avons une borne inférieure ($\frac{n}{2}$) et supérieure ($n$) pour la taille minimale du côté du carré.
+
+A partir de ces deux bornes, nous pouvons faire une recherche dichotomique pour rapprocher celles-ci jusqu'à ce qu'elles soient identiques.
+
+\subsection{Étant donné $n$, trouver la dimension du plus petit carré contenant les carrés $\{r_1 \ldots r_n \}$}
+
+Nous pouvons considérer que ce problème est un cas particulier du précédent et par conséquent le résoudre de la même manière.
+
+\subsection{Ajouter une 3ème dimension}
+
+
+
+
+\subsection{Empêcher un pavé de ``flotter''}
+
+Ici, nous aurons besoin de rajouter la 5ème règle qui avait été laissée de côté à la question 1. En effet, un pavé posé à deux endroits donc la deuxième occurrence est enlevée à l'output pourrait laisser un trou à la place et les couches du dessus pourraient ne pas être supportées.
+
+Nous pouvons la rajouter la contrainte suivante : Soit le pavé est au sol, soit la base du pavé doit être au même $z$ que le sommet d'un autre ($C_1$) et vu d'en haut, la base du premier doit intersecter avec le sommet de l'autre ($C_2$) :
+
+$$\forall i \in k, \exists j \in k, (C_1 \land C_2) \lor C(i) = 0$$
+
+Les propositions sont définies comme suit :
+\begin{itemize}
+  \item $C_1$ :
+  $
+  C(j) + \mathcal{Z}(j) = C(i)
+  $
+  \item $C_2$ : $C_{21} \land C_{22}$ avec :
+  \begin{itemize}
+    \item $C_{21}$ : $A(i) \geq A(j) \land A(i) + \mathcal{X}(i) \leq A(j) + \mathcal{X}(j)$
+    \item $C_{22}$ : $B(i) \geq B(j) \land B(i) + \mathcal{Y}(i) \leq B(j) + \mathcal{Y}(j)$
+  \end{itemize}
+\end{itemize}
+
+\subsection{Pivotage}
 
 $$
 \forall i \in k,
@@ -356,5 +232,52 @@ C_2 :
 \lor \lnot (y + \mathcal{X}(i) \leq m)
 \lor \beta_{i, x + y', y + x'}
 $$
+
+
+\subsection{Minimum d'unités de contact}
+
+Ici aussi, la 5ème règle omise à la question 1 doit être rajoutée pour éviter un rectangle ne soit compté deux fois en touchant un bord.
+
+On peut définir le nombre d'unités de contact avec le côté inférieur comme ceci :
+$$
+\sum_{\forall i \in k, A(i) = 0} \mathcal{Y}(i)
+$$
+
+De la même manière, on peut exprimer la somme des unités de contact sur les 4 côtés (bas, gauche, haut, droite) :
+
+$$
+\Gamma = \sum_{\forall i \in k, A(i) = 0} \mathcal{Y}(i) +
+\sum_{\forall i \in k, B(i) = 0} \mathcal{X}(i) +
+\sum_{\forall i \in k, A(i) + \mathcal{X}(i) =  n} \mathcal{Y}(i) +
+\sum_{\forall i \in k, B(i) + \mathcal{Y}(i) = m} \mathcal{X}(i)
+$$
+
+Dès lors, on peut rajouter la contrainte $\Gamma \geq p$
+
+
+\section{\#newgen}
+
+On définit $\beta_{i, x, y}$ comme le fait que le rectangle $i$ soit présent en position $(x,y)$
+
+On peut exprimer le fait que deux rectangles ne se superposent pas comme : $$
+\forall x,y , \forall i \in k : \beta_{i, x, y} \rightarrow
+\lnot \Big( \bigvee_{j \in k, j \neq i} \beta_{j, x, y} \Big)
+$$
+
+L'autre formule :
+
+$$
+\forall i \in k \bigvee_{x_1=0}^{n-\mathcal{X}(i)} \bigvee_{y_1=0}^{n-\mathcal{Y}(i)}
+\Big(
+  \bigwedge_{x_2=0}^{\mathcal{X}(i)} \bigwedge_{y_2=0}^{\mathcal{Y}(i)} \beta_{i, x_1 + x_2, y_1 + y_2}
+\Big)
+$$
+
+
+Pas de flottants : (on défini $\gamma_{x, y , z}$ comme étant le fait qu'il y aie un bloc en $(x, y , z)$)
+$$
+\forall x,y,z : \gamma_{x, y, z} \rightarrow  \Big( \gamma_{x, y, z - 1}  \lor x = 0 \Big)
+$$
+
 
 \end{document}
