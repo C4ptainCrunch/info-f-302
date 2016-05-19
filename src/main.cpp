@@ -33,6 +33,14 @@ void Solve2D(int k, int n, int m, int *X, int *Y){
                         }
                     }
                 }
+                vec<Lit> reverseImpl;
+                reverseImpl.push(~Lit(mu[i][x0][y0][1]));
+                for(int x1=x0; x1>=0 && x1>x0-X[i]; x1--){
+                    for(int y1=y0; y1>=0 && y1>y0-Y[i]; y1--){
+                        reverseImpl.push(Lit(mu[i][x1][y1][0]));
+                    }
+                }
+                s.addClause(reverseImpl);
             }
         }
         s.addClause(solution_exists);
@@ -273,8 +281,8 @@ int main(int argc, char *argv[]){
             }
             else if (argv[1][1] == 'f'){
                 mode = 'f';
+            }
         }
-    }
     }
 
     if(mode == '2'){
