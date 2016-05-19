@@ -91,8 +91,6 @@ void Solve2DRetournement(int k, int n, int m, int *X, int *Y){
                         for(int y1=0; y1<m; y1++){
                             if(x0<=x1 && x1<(x0+X[i]) && y0 <= y1 && y1<(y0+Y[i])){
                                 s.addTernary(~Lit(mu[i][x0][y0][0]), Lit(R[i]), Lit(mu[i][x1][y1][1]));
-                            } else {
-                                s.addTernary(~Lit(mu[i][x0][y0][0]), Lit(R[i]), ~Lit(mu[i][x1][y1][1]));
                             }
                         }
                     }
@@ -104,8 +102,6 @@ void Solve2DRetournement(int k, int n, int m, int *X, int *Y){
                         for(int y1=0; y1<m; y1++){
                             if(x0<=x1 && x1<(x0+Y[i]) && y0 <= y1 && y1<(y0+X[i])){
                                 s.addTernary(~Lit(mu[i][x0][y0][0]), ~Lit(R[i]), Lit(mu[i][x1][y1][1]));
-                            } else{
-                                s.addTernary(~Lit(mu[i][x0][y0][0]), ~Lit(R[i]), ~Lit(mu[i][x1][y1][1]));
                             }
                         }
                     }
