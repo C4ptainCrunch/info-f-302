@@ -56,7 +56,7 @@ inline bool next_combination(const Iterator first, Iterator k, const Iterator la
 
 using namespace std;
 
-void Solve2D(int k, int n, int m, int *X, int *Y, int p=0){
+bool Solve2D(int k, int n, int m, int *X, int *Y, int p=0){
     Solver s;
     int mu[k][n][m][2];
     for(int i=0; i<k; i++){
@@ -150,8 +150,7 @@ void Solve2D(int k, int n, int m, int *X, int *Y, int p=0){
     }
 
     if(!s.solve() || !s.okay()){
-        cout << 0 << endl;
-        exit(42);
+        return false;
     }
     if(s.okay()){
         for(int i =0; i<k; i++){
@@ -181,9 +180,10 @@ void Solve2D(int k, int n, int m, int *X, int *Y, int p=0){
             cerr << endl;
         }
     }
+    return true;
 }
 
-void Solve2DRetournement(int k, int n, int m, int *X, int *Y){
+bool Solve2DRetournement(int k, int n, int m, int *X, int *Y){
     Solver s;
     int mu[k][n][m][2];
     int R[k];
@@ -244,8 +244,7 @@ void Solve2DRetournement(int k, int n, int m, int *X, int *Y){
     }
 
     if(!s.solve() || !s.okay()){
-        cout << 0 << endl;
-        exit(42);
+        return false;
     }
     cerr << s.okay() << endl;
     if(s.okay()){
@@ -259,9 +258,10 @@ void Solve2DRetournement(int k, int n, int m, int *X, int *Y){
             }
         }
     }
+    return true;
 }
 
-void solve3D(int k, int n, int m, int o, int *X, int *Y, int *Z, bool flottant=false){
+bool solve3D(int k, int n, int m, int o, int *X, int *Y, int *Z, bool flottant=false){
     Solver s;
     int mu[k][n][m][o][2];
     for(int i=0; i<k; i++){
@@ -356,8 +356,7 @@ void solve3D(int k, int n, int m, int o, int *X, int *Y, int *Z, bool flottant=f
     }
 
     if(!s.solve() || !s.okay()){
-        cout << 0 << endl;
-        exit(42);
+        return false;
     }
     cerr << s.okay() << endl;
     if(s.okay()){
@@ -373,6 +372,8 @@ void solve3D(int k, int n, int m, int o, int *X, int *Y, int *Z, bool flottant=f
             }
         }
     }
+
+    return true;
 }
 
 int main(int argc, char *argv[]){
@@ -397,6 +398,8 @@ int main(int argc, char *argv[]){
         }
     }
 
+    bool success = false;
+
     if(mode == '2' || mode == 'b'){
         cout << "| Solving in base mode" << endl;
         Solver s;
@@ -415,7 +418,7 @@ int main(int argc, char *argv[]){
             min_border = atoi(argv[2]);
             cout << "| With minimum border lenght = " << min_border << endl;
         }
-        Solve2D(k, n, m, X,Y, min_border);
+        success = Solve2D(k, n, m, X,Y, min_border);
     } else if(mode == 'r'){
         cout << "| Solving in swap mode" << endl;
         Solver s;
@@ -429,7 +432,7 @@ int main(int argc, char *argv[]){
             int a;
             cin >> a >> X[i] >> Y[i];
         }
-        Solve2DRetournement(k, n, m, X,Y);
+        success =Solve2DRetournement(k, n, m, X,Y);
     } else if (mode == '3' || mode == 'f') {
         bool floating = false;
         if(mode == 'f')
@@ -442,6 +445,11 @@ int main(int argc, char *argv[]){
         int X2[] = {1,2,2,1};
         int Y2[] = {3,2,1,2};
         int Z2[] = {3,2,2,1};
-        solve3D(k, n, m, o, X2, Y2, Z2, floating);
+        success = solve3D(k, n, m, o, X2, Y2, Z2, floating);
+    }
+
+    if(!success){
+        cout << 0 << endl;
+        exit(42);
     }
 }
