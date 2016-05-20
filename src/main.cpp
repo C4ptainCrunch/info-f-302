@@ -87,24 +87,26 @@ void Solve2D(int k, int n, int m, int *X, int *Y, int p=0){
         s.addClause(solution_exists);
     }
 
-    for(int i=0; i<k; i++){
-        for(int x0=0; x0<n; x0++){
-            for(int y0=0; y0<m; y0++){
-                for(int x1=0; x1<n; x1++){
-                    for(int y1=0; y1<m; y1++){
-                        // beta(i, x0, y0) -> V(gama(i, x1, y1)) chaque block doit avoir un départ
-                        vec<Lit> reverseImpl;
-                        reverseImpl.push(~Lit(mu[i][x0][y0][1]));
-                        for(int x1=x0; x1>=0 && x1>x0-X[i]; x1--){
-                            for(int y1=y0; y1>=0 && y1>y0-Y[i]; y1--){
-                                reverseImpl.push(Lit(mu[i][x1][y1][0]));
+    if(p>0){
+        for(int i=0; i<k; i++){
+            for(int x0=0; x0<n; x0++){
+                for(int y0=0; y0<m; y0++){
+                    for(int x1=0; x1<n; x1++){
+                        for(int y1=0; y1<m; y1++){
+                            // beta(i, x0, y0) -> V(gama(i, x1, y1)) chaque block doit avoir un départ
+                            vec<Lit> reverseImpl;
+                            reverseImpl.push(~Lit(mu[i][x0][y0][1]));
+                            for(int x1=x0; x1>=0 && x1>x0-X[i]; x1--){
+                                for(int y1=y0; y1>=0 && y1>y0-Y[i]; y1--){
+                                    reverseImpl.push(Lit(mu[i][x1][y1][0]));
+                                }
                             }
+                            s.addClause(reverseImpl);
+                            if(x0 == x1 && y0==y1)
+                                continue;
+                            // Chaque rectanlge avoir son départ placé qu'une seule fois
+                            s.addBinary(~Lit(mu[i][x0][y0][0]), ~Lit(mu[i][x1][y1][0]));
                         }
-                        s.addClause(reverseImpl);
-                        if(x0 == x1 && y0==y1)
-                            continue;
-                        // Chaque rectanlge avoir son départ placé qu'une seule fois
-                        s.addBinary(~Lit(mu[i][x0][y0][0]), ~Lit(mu[i][x1][y1][0]));
                     }
                 }
             }
