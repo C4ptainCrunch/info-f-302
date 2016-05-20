@@ -24,7 +24,7 @@ OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWA
 #include "VarOrder.hpp"
 
 // Redfine if you want output to go somewhere else:
-#define reportf(format, args...) ( printf(format , ## args), fflush(stdout) )
+#define reportf(format, args...) ( fprintf(stderr, format , ## args), fflush(stderr) )
 
 
 //=================================================================================================

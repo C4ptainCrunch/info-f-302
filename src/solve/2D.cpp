@@ -1,7 +1,6 @@
 
 bool Solve2D(int k, int n, int m, int *X, int *Y, int p=0){
     Solver s;
-    s.verbosity=0;
     int mu[k][n][m][2];
     for(int i=0; i<k; i++){
         for(int x=0; x<n; x++){

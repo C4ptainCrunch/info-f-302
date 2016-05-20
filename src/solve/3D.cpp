@@ -1,7 +1,6 @@
 
 bool solve3D(int k, int n, int m, int o, int *X, int *Y, int *Z, bool flottant=false){
     Solver s;
-    s.verbosity=0;
     int mu[k][n][m][o][2];
     for(int i=0; i<k; i++){
         for(int x=0; x<n; x++){
