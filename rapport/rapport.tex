@@ -277,11 +277,40 @@ $$
 
 Ici aussi, la 5ème règle omise à la question 1 doit être rajoutée pour éviter un rectangle ne soit compté deux fois en touchant un bord.
 
+Nous devons déffinir quelques symboles en plus :
+\begin{itemize}
+  \item $P = (m + n) \cdot 2$ est le périmètre du grand rectangle.
+  \item $p$ est le nombre minimal de points de contacts désiré
+  \item $e_{x,y}$ est un bord orienté en position $(x,y)$
+  \item $\theta$ est l'ensemble des bords orientés, $e$,  (un coin vaut donc pour deux bords orientés). $\#\theta = P$
+  \item $\Omega$ est l'ensemble des ensembles de cardinal $P-p+1$ dont les éléments appartiennent à $\theta$.
+    $\#\Omega = C_P^{P-p+1} = C_P^{p-1}$
+\end{itemize}
+
+Nous pouvons maintenant rajouter la contrainte : $$
+\forall \omega \in \Omega, \exists e \in \omega, \exists i \in k : \beta_{i, e_x, e_y}
+$$
+
+Ce qui donne en FNC :
+
+$$
+\bigwedge_{\omega \in \Omega} \bigvee_{e \in \omega} \bigvee_{i \in k} \beta_{i, e_x, e_y}
+$$
+
 
 
 \subsection{Maximiser le contact}
 
 N'ayant trouvé aucune documentation sur le mode MAX-SAT, nous n'avons pas réussi à l'implémenter.
 Nous pouvons cependant modéliser le problème ainsi que spécifier la liste de contraintes à essayer de satisfaire.
+
+Nous pouvons néenmoins modéliser le problème.
+
+Comme dans la question 9, nous aurons besoin de la 5ème règle omise à la question 1 pour les mêmes raisons.
+
+Ici, nous devrons maximiser le nombres de contraintes satisfaites de cet ensemble-ci :
+$$
+  \forall e \in \theta \bigvee_{i \in k} \beta_{i, e_x, e_y}
+$$
 
 \end{document}
