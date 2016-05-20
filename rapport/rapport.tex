@@ -124,7 +124,7 @@ On commence par exprimer chaque contrainte de la question précédente en FNC :
 
 La FNC complète est la conjonction des 4 formules ci dessus.
 
-Cependant, nous pouvons omettre les 5ème et 6ème contraintes. En effet, cela ne nous pose pas problème qu'un rectangle soit posé à plusieurs endroits en même temps. Ou même qu'un bloc soit considéré comme occupé par un rectangle alors que ce n'est pas possible. En effet, notre programme ne regarde que les positions de départs des blocs, pas leur occupation totale. Si il y a plusieurs départs pour un rectangle, il suffit de garder la première position qui a été trouvée pour chaque rectangle et de ne pas s'occuper des autres.
+Cependant, nous pouvons omettre les 5\up{ème} et 6\up{ème} contraintes. En effet, cela ne nous pose pas problème qu'un rectangle soit posé à plusieurs endroits en même temps. Ou même qu'un bloc soit considéré comme occupé par un rectangle alors que ce n'est pas possible. En effet, notre programme ne regarde que les positions de départs des blocs, pas leur occupation totale. Si il y a plusieurs départs pour un rectangle, il suffit de garder la première position qui a été trouvée pour chaque rectangle et de ne pas s'occuper des autres.
 
 \subsection{Implémenter}
 
@@ -193,7 +193,7 @@ A partir de ces deux bornes, nous pouvons faire une recherche dichotomique pour 
 
 Nous pouvons considérer que ce problème est un cas particulier du précédent et par conséquent le résoudre de la même manière.
 
-\subsection{Ajouter une 3ème dimension}
+\subsection{Ajouter une 3\up{ème} dimension}
 Nous pouvons ré-utiliser les mêmes contraintes que pour la question 1 en rajoutant une dimension :
 
 \begin{enumerate}
@@ -258,7 +258,7 @@ $$
   \Big]
 $$
 
-Nous aurons besoin de rajouter les 5ème et 6ème règles qui avaient étés laissées de côté à la question 1. En effet, un pavé posé à deux endroits dont la deuxième occurrence est enlevée à l'output pourrait laisser un trou à la place et les couches du dessus pourraient ne pas être supportées.
+Nous aurons besoin de rajouter les 5\up{ème} et 6\up{ème} règles qui avaient étés laissées de côté à la question 1. En effet, un pavé posé à deux endroits dont la deuxième occurrence est enlevée à l'output pourrait laisser un trou à la place et les couches du dessus pourraient ne pas être supportées.
 
 \subsection{Pivotage}
 
@@ -315,7 +315,7 @@ $$
 
 \subsection{Minimum d'unités de contact}
 
-Ici aussi, les 5ème et 6ème règles omises à la question 1 doivent être rajoutées pour éviter un rectangle ne soit compté deux fois en touchant un bord.
+Ici aussi, les 5\up{ème} et 6\up{ème} règles omises à la question 1 doivent être rajoutées pour éviter un rectangle ne soit compté deux fois en touchant un bord.
 
 Nous devons définir quelques symboles en plus :
 \begin{itemize}
@@ -348,7 +348,7 @@ N'ayant trouvé aucune documentation sur le mode MAX-SAT, nous n'avons pas réus
 Nous pouvons cependant modéliser le problème ainsi que spécifier la liste de contraintes à essayer de satisfaire.
 
 
-Comme dans la question 9, nous aurons besoin des 5ème et 6ème règles omises à la question 1 pour les mêmes raisons.
+Comme dans la question 9, nous aurons besoin des 5\up{ème} et 6\up{ème} règles omises à la question 1 pour les mêmes raisons.
 
 Ici, nous devrons maximiser le nombres de contraintes satisfaites appartenant à cet ensemble-ci :
 $$
