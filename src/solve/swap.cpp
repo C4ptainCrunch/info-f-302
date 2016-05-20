@@ -1,7 +1,6 @@
 
 bool Solve2DRetournement(int k, int n, int m, int *X, int *Y){
     Solver s;
-    s.verbosity=0;
     int mu[k][n][m][2];
     int R[k];
     for(int i=0; i<k; i++){
