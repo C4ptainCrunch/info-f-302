@@ -47,6 +47,7 @@ On peut commencer par énoncer en français les contraintes à respecter :
   \item Le fait qu'un rectangle commence à une position implique que toutes les positions ``suivantes'' soient occupées par ce même rectangle
   \item Chaque rectangle doit être placé au moins une fois
   \item Chaque rectangle doit être placé au maximum une fois
+  \item Chaque position occupée par un rectangle implique que ce rectangle soit placé suffisement proche de celle-ci
 \end{enumerate}
 \vspace{1em}
 
@@ -59,7 +60,7 @@ On peut ensuite les formaliser mathématiquement :
   \item $
   \forall i \in k,
   \forall x \in [0, n - \mathcal{X}(i)] , y \in [0, m - \mathcal{Y}(i)],
-    x' \in [0, \mathcal{X}(i)], y' \in [0, \mathcal{Y}(i)] : \gamma_{i, x, y} \rightarrow \beta_{i, x', y'}
+    x' \in [0, \mathcal{X}(i)], y' \in [0, \mathcal{Y}(i)] : \gamma_{i, x, y} \rightarrow \beta_{i, x+x', y+y'}
   $
 
   \item $\forall i \in k, \exists x \in  [0, n - \mathcal{X}(i)], y \in [0, m - \mathcal{Y}(i)] : \gamma_{i, x, y}$
@@ -70,6 +71,14 @@ On peut ensuite les formaliser mathématiquement :
   \forall y,y' \in [0, m - \mathcal{Y}(i)],
   x \neq x', y \neq y' :
   \gamma_{i, x, y} \rightarrow \lnot \gamma_{i, x', y'}
+  $
+
+  \item $
+  \forall i \in k, \forall x \in [0, n], y \in [0, m] : \beta_{i, x, y}
+  \rightarrow
+  \Big( \exists x' \in [0, \mathcal{X}(i)], y' \in [0, \mathcal{Y}(i)] :
+  \gamma_{i, x-x', y-y'}
+  \Big)
   $
 \end{enumerate}
 
@@ -101,17 +110,43 @@ On commence par exprimer chaque contrainte de la question précédente en FNC :
   \Big( (\lnot \gamma_{i, x, y}) \lor \lnot \gamma_{i, x', y'} \Big)
   $
 
+  \item $
+  \bigwedge_{i \in k} \bigwedge_{x=0}^{n} \bigwedge_{y=0}^{m} \Big(
+  ( \lnot \beta_{i, x, y}) \lor
+  (\bigvee_{x'=0}^{\mathcal{X}(i)} \bigvee_{y'=0}^{\mathcal{Y}(i)}
+  \gamma_{i, x-x', y-y'})
+  \Big)
+  $
+
+
 \end{enumerate}
 \vspace{1em}
 
 La FNC complète est la conjonction des 4 formules ci dessus.
 
-Cependant, nous pouvons omettre la 5ème contrainte. En effet, cela ne nous pose pas problème qu'un rectangle soit posé à plusieurs endroits en même temps. Il suffit que notre programme ne garde que la première position qui a été trouvée pour chaque rectangle et ne s'occupe pas des autres.
+Cependant, nous pouvons omettre les 5ème et 6ème contraintes. En effet, cela ne nous pose pas problème qu'un rectangle soit posé à plusieurs endroits en même temps. Ou même qu'un bloc soit considéré comme occupé par un rectangle alors que ce n'est pas possible. En effet, notre programme ne regarde que les positions de départs des blocs, pas leur occupation totale. Si il y a plusieurs départs pour un rectangle, il suffit de garder la première position qui a été trouvée pour chaque rectangle et de ne pas s'occuper des autres.
 
 \subsection{Implémenter}
 
-Implémenter et tester sur les exemples 1 et 2, et proposer éventuellement
-d’autres exemples.
+Notre implémentation se trouve dans le fichier \texttt{main.cpp} ainsi que dans les fichiers inclus par celui-ci (plus particulièrement \texttt{solve/*}). Vous pouvez tester celle-ci en la compilant grâce à la commande \texttt{make} puis en l'exécutant grâce à \texttt{./solver -2} à laquelle vous pouvez passer un fichier en entrée (\texttt{stdin}).
+
+L'exécutable affichera des informations comme l'avancement ou le nombre de contraintes sur \texttt{stderr} ainsi que l'output demandé dans les consignes sur \texttt{stdout}.
+
+Nous avons utilisé plusieurs exemples : ceux des consignes se trouvent dans \texttt{data/impossible} et \texttt{data/datas}. Nous avons aussi utilisé plsieurs fois \texttt{data/BENG06.TXT}, \texttt{data/little}, \texttt{data/minimal} et \texttt{data/bord}.
+
+Nos résultats (ainsi que ceux des questions suivantes) ont été générés et affichés graphiquement grâce à un \textit{IPython notebook} : \texttt{py/results.ipynb} que nous avons développé et dont une version exécutée se trouve dans le fichier \texttt{results.html}\footnote{Celui-ci est aussi disponnible sur internet à l'adresse \url{https://github.com/C4ptainCrunch/info-f-302/blob/master/src/py/results.ipynb}.} que nous vous invitons à consulter\footnote{Vous pouvez aussi interagir avec celui-ci grâce à la commande \texttt{jupyter notebook} à lancer dans le dossier courant après avoir installé ses dépendances (\texttt{(sudo) pip install jupyter matplotlib numpy}).}.
+
+Notre programme peut être appelé avec les options suivantes :
+\begin{itemize}
+  \item \texttt{-2} pour la résolution normale
+  \item \texttt{-3} pour la résolution en 3D
+  \item \texttt{-f} pour la résolution en 3D sans blocs flottants
+  \item \texttt{-r} pour accepter le pivotage
+  \item \texttt{-s} pour résoudre la question 4
+  \item \texttt{-n \textit{N}} pour résoudre la question 5 (avec \texttt{\textit{N}} étant le nombre de carrés à placer) \footnote{Ce mode-ci n'attend rien en entrée et génère tout seul les carrés}
+  \item \texttt{-b \textit{P}} pour résoudre la question 9 (avec \texttt{\textit{P}} étant le nombre minimal de bords à toucher)
+\end{itemize}
+
 
 \subsection{Trouver le plus petit carré admettant une solution}
 
@@ -201,11 +236,16 @@ Ce qui nous donne en FNC :
 
 \subsection{Empêcher un pavé de ``flotter''}
 
+Pour cette question, nous avons considéré que un pavé n'est pas flottant si la totalité de sa surface inférieure est en contact avec le sol ou d'autres blocs.\footnote{Si nous avions voulu considérer le fait que pour qu'un pavé ne soit pas flottant il suffisait qu'une partie de sa surfface inférieure touche un autre bloc ou le sol, nous aurions pu utiliser la contrainte suivante : $
+\forall i \in k, \forall z \in [1, o], \exists x \in [0, n], y \in [0, m],
+\exists j \in k : \beta_{i, x, y, z} \rightarrow \beta_{j, x, y, z-1}
+$}
+
 Pour empêcher un pavé de flotter, nous pouvons ajouter la contrainte suivante :
 
 $$
-\forall i \in k, \forall x \in [0, n], y \in [0, m], z \in [1, o] :
-\exists j \in k \beta_{i, x, y, z} \rightarrow \beta_{j, x, y, z-1}
+\forall i \in k, \forall x \in [0, n], y \in [0, m], z \in [1, o],
+\exists j \in k : \beta_{i, x, y, z} \rightarrow \beta_{j, x, y, z-1}
 $$
 
 Celle-ci peut se traduire en FNC comme ceci :
