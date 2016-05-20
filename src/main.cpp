@@ -15,24 +15,24 @@ inline int max(int x, int y){
 }
 
 
-template <typename Iterator>
-   inline bool next_combination(const Iterator first, Iterator k, const Iterator last)
-   {
-      if ((first == last) || (first == k) || (last == k))
-         return false;
-      Iterator itr1 = first;
-      Iterator itr2 = last;
-      ++itr1;
-      if (last == itr1)
-         return false;
-      itr1 = last;
-      --itr1;
-      itr1 = k;
-      --itr2;
-      while (first != itr1)
-      {
-         if (*--itr1 < *itr2)
-         {
+    template <typename Iterator>
+inline bool next_combination(const Iterator first, Iterator k, const Iterator last)
+{
+    if ((first == last) || (first == k) || (last == k))
+        return false;
+    Iterator itr1 = first;
+    Iterator itr2 = last;
+    ++itr1;
+    if (last == itr1)
+        return false;
+    itr1 = last;
+    --itr1;
+    itr1 = k;
+    --itr2;
+    while (first != itr1)
+    {
+        if (*--itr1 < *itr2)
+        {
             Iterator j = k;
             while (!(*itr1 < *j)) ++j;
             std::iter_swap(itr1,j);
@@ -42,16 +42,16 @@ template <typename Iterator>
             std::rotate(itr1,j,last);
             while (last != j)
             {
-               ++j;
-               ++itr2;
+                ++j;
+                ++itr2;
             }
             std::rotate(k,itr2,last);
             return true;
-         }
-      }
-      std::rotate(first,k,last);
-      return false;
-   }
+        }
+    }
+    std::rotate(first,k,last);
+    return false;
+}
 
 
 using namespace std;
@@ -82,27 +82,27 @@ void Solve2D(int k, int n, int m, int *X, int *Y, int p=0){
                     }
                 }
 
-                // beta(i, x0, y0) -> V(gama(i, x1, y1)) chaque block doit avoir un départ
-                vec<Lit> reverseImpl;
-                reverseImpl.push(~Lit(mu[i][x0][y0][1]));
-                for(int x1=x0; x1>=0 && x1>x0-X[i]; x1--){
-                    for(int y1=y0; y1>=0 && y1>y0-Y[i]; y1--){
-                        reverseImpl.push(Lit(mu[i][x1][y1][0]));
-                    }
-                }
-                s.addClause(reverseImpl);
             }
         }
         s.addClause(solution_exists);
     }
 
-    for(int x0=0; x0<n; x0++){
-        for(int y0=0; y0<m; y0++){
-            for(int x1=0; x1<n; x1++){
-                for(int y1=0; y1<m; y1++){
-                    if(x0 == x1 && y0==y1)
-                        continue;
-                    for(int i=0; i<k; i++){
+    for(int i=0; i<k; i++){
+        for(int x0=0; x0<n; x0++){
+            for(int y0=0; y0<m; y0++){
+                for(int x1=0; x1<n; x1++){
+                    for(int y1=0; y1<m; y1++){
+                        // beta(i, x0, y0) -> V(gama(i, x1, y1)) chaque block doit avoir un départ
+                        vec<Lit> reverseImpl;
+                        reverseImpl.push(~Lit(mu[i][x0][y0][1]));
+                        for(int x1=x0; x1>=0 && x1>x0-X[i]; x1--){
+                            for(int y1=y0; y1>=0 && y1>y0-Y[i]; y1--){
+                                reverseImpl.push(Lit(mu[i][x1][y1][0]));
+                            }
+                        }
+                        s.addClause(reverseImpl);
+                        if(x0 == x1 && y0==y1)
+                            continue;
                         s.addBinary(~Lit(mu[i][x0][y0][0]), ~Lit(mu[i][x1][y1][0]));
                     }
                 }
@@ -407,7 +407,7 @@ int main(int argc, char *argv[]){
             cin >> a >> X[i] >> Y[i];
         }
 
-        Solve2D(k, n, m, X,Y, 14);
+        Solve2D(k, n, m, X,Y, 15);
     } else if(mode == 'r'){
         cout << "| Solving in swap mode" << endl;
         Solver s;
