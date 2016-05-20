@@ -63,6 +63,7 @@ On peut ensuite les formaliser mathématiquement :
   $
 
   \item $\forall i \in k, \exists x \in  [0, n - \mathcal{X}(i)], y \in [0, m - \mathcal{Y}(i)] : \gamma_{i, x, y}$
+
   \item $
   \forall i \in k,
   \forall x,x' \in [0, n - \mathcal{X}(i)],
@@ -158,32 +159,70 @@ A partir de ces deux bornes, nous pouvons faire une recherche dichotomique pour 
 Nous pouvons considérer que ce problème est un cas particulier du précédent et par conséquent le résoudre de la même manière.
 
 \subsection{Ajouter une 3ème dimension}
+Nous pouvons ré-utiliser les mêmes contraintes que pour la question 1 en rajoutant une dimension :
 
+\begin{enumerate}
+  \item $\forall i,j \in k, i \neq j, \forall x \in [0,n], y \in [0,m], z \in [0,o] : \beta_{i, x, y, z} \rightarrow \lnot \beta_{j, x, y, z}$
 
+  \item $
+  \forall i \in k,
+  \forall x \in [0, n - \mathcal{X}(i)] , y \in [0, m - \mathcal{Y}(i)], z \in [0, o - \mathcal{Z}(i)],
+    x' \in [0, \mathcal{X}(i)], y' \in [0, \mathcal{Y}(i)], z' \in [0, \mathcal{Z}(i)]  :
+    \gamma_{i, x, y, z} \rightarrow \beta_{i, x', y', z'}
+  $
 
+  \item $\forall i \in k, \exists x \in  [0, n - \mathcal{X}(i)], y \in [0, m - \mathcal{Y}(i)], z \in [0, o - \mathcal{Z}(i)] :
+  \gamma_{i, x, y, z}$
+\end{enumerate}
+\vspace{1em}
+
+Ce qui nous donne en FNC :
+
+\begin{enumerate}
+  \item $
+  \bigwedge_{i \in k} \bigwedge_{j \in k, i \neq j}
+  \bigwedge_{x=0}^{n} \bigwedge_{y=0}^{m} \bigwedge_{z=0}^{o}
+  \Big( (\lnot \beta_{i, x, y, z}) \lor \beta_{j, x, y, z} \Big)
+  $
+
+  \item $
+  \bigwedge_{i \in k}
+  \bigwedge_{x=0}^{n - \mathcal{X}(i)} \bigwedge_{y=0}^{m - \mathcal{Y}(i)} \bigwedge_{z=0}^{o - \mathcal{Z}(i)}
+  \bigwedge_{x'=0}^{\mathcal{X}(i)} \bigwedge_{y'=0}^{\mathcal{Y}(i)} \bigwedge_{z'=0}^{\mathcal{Z}(i)}
+  \Big( (\lnot \gamma_{i, x, y, z}) \lor \beta_{i, x+x', y+y', z+z'} \Big)
+  $
+
+  \item $
+  \bigwedge_{i \in k}
+  \bigvee_{x=0}^{\mathcal{X}(i)} \bigvee_{y=0}^{\mathcal{Y}(i)} \bigvee_{z=0}^{\mathcal{Z}(i)}
+  \gamma_{i, x, y, z}
+  $
+\end{enumerate}
 
 \subsection{Empêcher un pavé de ``flotter''}
 
-Ici, nous aurons besoin de rajouter la 5ème règle qui avait été laissée de côté à la question 1. En effet, un pavé posé à deux endroits donc la deuxième occurrence est enlevée à l'output pourrait laisser un trou à la place et les couches du dessus pourraient ne pas être supportées.
+Pour empêcher un pavé de flotter, nous pouvons ajouter la contrainte suivante :
 
-Nous pouvons la rajouter la contrainte suivante : Soit le pavé est au sol, soit la base du pavé doit être au même $z$ que le sommet d'un autre ($C_1$) et vu d'en haut, la base du premier doit intersecter avec le sommet de l'autre ($C_2$) :
+$$
+\forall i \in k, \forall x \in [0, n], y \in [0, m], z \in [1, o] :
+\exists j \in k \beta_{i, x, y, z} \rightarrow \beta_{j, x, y, z-1}
+$$
 
-$$\forall i \in k, \exists j \in k, (C_1 \land C_2) \lor C(i) = 0$$
+Celle-ci peut se traduire en FNC comme ceci :
 
-Les propositions sont définies comme suit :
-\begin{itemize}
-  \item $C_1$ :
-  $
-  C(j) + \mathcal{Z}(j) = C(i)
-  $
-  \item $C_2$ : $C_{21} \land C_{22}$ avec :
-  \begin{itemize}
-    \item $C_{21}$ : $A(i) \geq A(j) \land A(i) + \mathcal{X}(i) \leq A(j) + \mathcal{X}(j)$
-    \item $C_{22}$ : $B(i) \geq B(j) \land B(i) + \mathcal{Y}(i) \leq B(j) + \mathcal{Y}(j)$
-  \end{itemize}
-\end{itemize}
+$$
+\bigwedge_{i \in k}
+  \bigwedge_{x=0}^{n} \bigwedge_{y=0}^{m} \bigwedge_{z=1}^{o}
+  \Big[
+  (\lnot \beta_{i, x, y, z}) \lor (\bigvee_{j \in k} \beta_{j, x, y, z-1})
+  \Big]
+$$
+
+Nous aurons besoin de rajouter la 5ème règle qui avait été laissée de côté à la question 1. En effet, un pavé posé à deux endroits dont la deuxième occurrence est enlevée à l'output pourrait laisser un trou à la place et les couches du dessus pourraient ne pas être supportées.
 
 \subsection{Pivotage}
+
+Ici aussi, nous pouvons utiliser presque les mêmes contraintes que pour la question 1.
 
 $$
 \forall i \in k,
@@ -238,46 +277,11 @@ $$
 
 Ici aussi, la 5ème règle omise à la question 1 doit être rajoutée pour éviter un rectangle ne soit compté deux fois en touchant un bord.
 
-On peut définir le nombre d'unités de contact avec le côté inférieur comme ceci :
-$$
-\sum_{\forall i \in k, A(i) = 0} \mathcal{Y}(i)
-$$
-
-De la même manière, on peut exprimer la somme des unités de contact sur les 4 côtés (bas, gauche, haut, droite) :
-
-$$
-\Gamma = \sum_{\forall i \in k, A(i) = 0} \mathcal{Y}(i) +
-\sum_{\forall i \in k, B(i) = 0} \mathcal{X}(i) +
-\sum_{\forall i \in k, A(i) + \mathcal{X}(i) =  n} \mathcal{Y}(i) +
-\sum_{\forall i \in k, B(i) + \mathcal{Y}(i) = m} \mathcal{X}(i)
-$$
-
-Dès lors, on peut rajouter la contrainte $\Gamma \geq p$
 
 
-\section{\#newgen}
+\subsection{Maximiser le contact}
 
-On définit $\beta_{i, x, y}$ comme le fait que le rectangle $i$ soit présent en position $(x,y)$
-
-On peut exprimer le fait que deux rectangles ne se superposent pas comme : $$
-\forall x,y , \forall i \in k : \beta_{i, x, y} \rightarrow
-\lnot \Big( \bigvee_{j \in k, j \neq i} \beta_{j, x, y} \Big)
-$$
-
-L'autre formule :
-
-$$
-\forall i \in k \bigvee_{x_1=0}^{n-\mathcal{X}(i)} \bigvee_{y_1=0}^{n-\mathcal{Y}(i)}
-\Big(
-  \bigwedge_{x_2=0}^{\mathcal{X}(i)} \bigwedge_{y_2=0}^{\mathcal{Y}(i)} \beta_{i, x_1 + x_2, y_1 + y_2}
-\Big)
-$$
-
-
-Pas de flottants : (on défini $\gamma_{x, y , z}$ comme étant le fait qu'il y aie un bloc en $(x, y , z)$)
-$$
-\forall x,y,z : \gamma_{x, y, z} \rightarrow  \Big( \gamma_{x, y, z - 1}  \lor x = 0 \Big)
-$$
-
+N'ayant trouvé aucune documentation sur le mode MAX-SAT, nous n'avons pas réussi à l'implémenter.
+Nous pouvons cependant modéliser le problème ainsi que spécifier la liste de contraintes à essayer de satisfaire.
 
 \end{document}
