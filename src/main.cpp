@@ -135,16 +135,13 @@ void Solve2D(int k, int n, int m, int *X, int *Y, int p=0){
             borders[2*n+m+y] = make_tuple(2*n+m+y, n-1,y);
         }
         int c = borders.size()- p + 1;
-        cerr << c << " " << borders.size()<<endl;
         do{
             vec<Lit> b;
             for(int w=0; w<c; w++){
                 for(int i=0; i<k; i++){
                     b.push(Lit(mu[i][get<1>(borders[w])][get<2>(borders[w])][1]));
                 }
-                cerr << get<1>(borders[w])<< " " <<get<2>(borders[w])<<"\t";
             }
-            cerr << endl;
             s.addClause(b);
         } while(next_combination(borders.begin(), borders.begin() + c, borders.end()));
     }
@@ -153,7 +150,6 @@ void Solve2D(int k, int n, int m, int *X, int *Y, int p=0){
         cout << 0 << endl;
         exit(42);
     }
-    cerr << s.okay() << endl;
     if(s.okay()){
         for(int i =0; i<k; i++){
             for(int x=0; x<n; x++){
