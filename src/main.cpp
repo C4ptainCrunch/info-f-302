@@ -16,6 +16,7 @@ using namespace std;
 #include "solve/2D.cpp"
 #include "solve/swap.cpp"
 #include "solve/3D.cpp"
+#include "solve/robert.cpp"
 
 int main(int argc, char *argv[]){
     char mode = '2';
@@ -37,6 +38,12 @@ int main(int argc, char *argv[]){
                 mode = 'b';
             } else if (argv[1][1] == 's'){
                 mode = 's';
+            } else if (argv[1][1] == 'n'){
+                if(argc < 3){
+                    cerr << "You need a second argument for the super square mode(tm)" << endl;
+                    exit(-1);
+                }
+                mode = 'n';
             }
         }
     }
@@ -99,47 +106,20 @@ int main(int argc, char *argv[]){
             int a;
             cin >> a >> X[i] >> Y[i];
         }
+        lepetitrobert(k, X, Y);
+        success = true;
 
-        int aire = 0;
-        for (int i = 0; i < k; ++i)
-        {
-            aire += X[i] * Y[i];
+    } else if(mode == 'n'){
+        cerr << "Solving in super square mode(tm)" << endl;
+        int k = atoi(argv[2]);
+        int X[k];
+        int Y[k];
+        for(int i =0; i<k; i++){
+            X[i] = i+1;
+            Y[i] = i+1;
         }
-        int h = sqrt(aire);
-
-        std::stringstream buffer;
-        std::streambuf * old = std::cout.rdbuf(buffer.rdbuf());
-
-        do {
-            cerr << "Trying with a size of " << h << endl;
-            success = Solve2D(k, h, h, X,Y);
-            cerr << "\b" << (success ? "Solvable" : "Insolvable") << endl;
-            h = h * 2;
-        } while(!success);
-        int min = h/4;
-        int max = h/2;
-
-        cerr << "Lower bound : " << min << " Upper bound: "  << max << endl;
-
-        do {
-            int step = (max - min) / 2;
-            int test = min + step;
-            cerr << "Trying with a size of " << test << endl;
-            if(Solve2D(k, test, test, X,Y)){
-                cerr << "Solvable" << endl;
-                max = test;
-            } else {
-                min = test;
-                cerr << "Insolvable" << endl;
-            }
-        } while(min != max - 1);
-
-        // std::string text = buffer.str();
-        std::cout.rdbuf(old);
-
-        cerr << "Minimal size is " << max << endl;
-        cout << max << endl;
-
+        lepetitrobert(k, X, Y);
+        success = true;
     }
 
     if(!success){
