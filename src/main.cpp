@@ -103,6 +103,7 @@ void Solve2D(int k, int n, int m, int *X, int *Y, int p=0){
                     if(x0 == x1 && y0==y1)
                         continue;
                     for(int i=0; i<k; i++){
+                        // Chaque rectanlge avoir son départ placé qu'une seule fois
                         s.addBinary(~Lit(mu[i][x0][y0][0]), ~Lit(mu[i][x1][y1][0]));
                     }
                 }
