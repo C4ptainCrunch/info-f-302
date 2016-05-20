@@ -394,6 +394,8 @@ int main(int argc, char *argv[]){
                     exit(-1);
                 }
                 mode = 'b';
+            } else if (argv[1][1] == 's'){
+                mode = 's';
             }
         }
     }
@@ -402,7 +404,6 @@ int main(int argc, char *argv[]){
 
     if(mode == '2' || mode == 'b'){
         cout << "| Solving in base mode" << endl;
-        Solver s;
         int k;
         int m;
         int n;
@@ -421,7 +422,6 @@ int main(int argc, char *argv[]){
         success = Solve2D(k, n, m, X,Y, min_border);
     } else if(mode == 'r'){
         cout << "| Solving in swap mode" << endl;
-        Solver s;
         int k;
         int m;
         int n;
@@ -446,6 +446,50 @@ int main(int argc, char *argv[]){
         int Y2[] = {3,2,1,2};
         int Z2[] = {3,2,2,1};
         success = solve3D(k, n, m, o, X2, Y2, Z2, floating);
+    } else if(mode == 's'){
+        cout << "| Solving in smallest square mode" << endl;
+        int k;
+        int m;
+        int n;
+        cin >> k >> m >> n;
+        int X[k];
+        int Y[k];
+        for(int i =0; i<k; i++){
+            int a;
+            cin >> a >> X[i] >> Y[i];
+        }
+
+        int aire = 0;
+        for (int i = 0; i < k; ++i)
+        {
+            aire += X[i] * Y[i];
+        }
+        int h = sqrt(aire);
+        do {
+            cerr << "Trying with a size of " << h << endl;
+            success = Solve2D(k, h, h, X,Y);
+            cerr << "\b" << (success ? "Solvable" : "Insolvable") << endl;
+            h = h * 2;
+        } while(!success);
+        int min = h/4;
+        int max = h/2;
+
+        cerr << "Lower bound : " << min << " Upper bound: "  << max << endl;
+
+        do {
+            int step = (max - min) / 2;
+            int test = min + step;
+            cerr << "Trying with a size of " << test << endl;
+            if(Solve2D(k, test, test, X,Y)){
+                cerr << "Solvable" << endl;
+                max = test;
+            } else {
+                min = test;
+                cerr << "Insolvable" << endl;
+            }
+        } while(min != max - 1);
+        cout << "Minimal size: " << max << endl;
+
     }
 
     if(!success){
