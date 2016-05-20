@@ -383,14 +383,19 @@ int main(int argc, char *argv[]){
                 mode = '3';
             } else if (argv[1][1] == 'r'){
                 mode = 'r';
-            }
-            else if (argv[1][1] == 'f'){
+            } else if (argv[1][1] == 'f'){
                 mode = 'f';
+            } else if (argv[1][1] == 'b'){
+                if(argc < 3){
+                    cerr << "You need a second argument for the border mode" << endl;
+                    exit(-1);
+                }
+                mode = 'b';
             }
         }
     }
 
-    if(mode == '2'){
+    if(mode == '2' || mode == 'b'){
         cout << "| Solving in base mode" << endl;
         Solver s;
         int k;
@@ -403,8 +408,12 @@ int main(int argc, char *argv[]){
             int a;
             cin >> a >> X[i] >> Y[i];
         }
-
-        Solve2D(k, n, m, X,Y, 15);
+        int min_border = 0;
+        if (mode == 'b'){
+            min_border = atoi(argv[2]);
+            cout << "| With minimum border lenght = " << min_border << endl;
+        }
+        Solve2D(k, n, m, X,Y, min_border);
     } else if(mode == 'r'){
         cout << "| Solving in swap mode" << endl;
         Solver s;
