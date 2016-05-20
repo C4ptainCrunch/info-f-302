@@ -9,14 +9,7 @@
 
 #include "Solver.hpp"
 
-
-
-inline int max(int x, int y){
-    return (x > y) ? x : y;
-}
-
-
-    template <typename Iterator>
+template <typename Iterator>
 inline bool next_combination(const Iterator first, Iterator k, const Iterator last)
 {
     if ((first == last) || (first == k) || (last == k))
@@ -54,11 +47,11 @@ inline bool next_combination(const Iterator first, Iterator k, const Iterator la
     return false;
 }
 
-
 using namespace std;
 
 bool Solve2D(int k, int n, int m, int *X, int *Y, int p=0){
     Solver s;
+    s.verbosity=0;
     int mu[k][n][m][2];
     for(int i=0; i<k; i++){
         for(int x=0; x<n; x++){
@@ -163,29 +156,13 @@ bool Solve2D(int k, int n, int m, int *X, int *Y, int p=0){
                 }
             }
         }
-        cerr << endl << endl;
-        for(int x=n-1; x>=0; x--){
-            for(int y=0; y<m; y++){
-                bool f = false;
-                for(int i =0; i<k; i++){
-                    if(s.model[mu[i][x][y][1]] == l_True){
-                        cerr <<  i + 1 <<" ";
-                        f=true;
-                        break;
-                    }
-                } if(!f) {
-                    cerr <<  0 <<" ";
-                }
-
-            }
-            cerr << endl;
-        }
     }
     return true;
 }
 
 bool Solve2DRetournement(int k, int n, int m, int *X, int *Y){
     Solver s;
+    s.verbosity=0;
     int mu[k][n][m][2];
     int R[k];
     for(int i=0; i<k; i++){
@@ -264,6 +241,7 @@ bool Solve2DRetournement(int k, int n, int m, int *X, int *Y){
 
 bool solve3D(int k, int n, int m, int o, int *X, int *Y, int *Z, bool flottant=false){
     Solver s;
+    s.verbosity=0;
     int mu[k][n][m][o][2];
     for(int i=0; i<k; i++){
         for(int x=0; x<n; x++){
