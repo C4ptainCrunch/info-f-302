@@ -1,4 +1,4 @@
-CXXFLAGS = -ggdb  -std=c++11
+CXXFLAGS = -ggdb  -std=c++11 -O4
 TARGET = solver
 LDFLAGS = -lm
 
