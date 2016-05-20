@@ -47,7 +47,7 @@ On peut commencer par énoncer en français les contraintes à respecter :
   \item Le fait qu'un rectangle commence à une position implique que toutes les positions ``suivantes'' soient occupées par ce même rectangle
   \item Chaque rectangle doit être placé au moins une fois
   \item Chaque rectangle doit être placé au maximum une fois
-  \item Chaque position occupée par un rectangle implique que ce rectangle soit placé suffisement proche de celle-ci
+  \item Chaque position occupée par un rectangle implique que ce rectangle soit placé suffisamment proche de celle-ci
 \end{enumerate}
 \vspace{1em}
 
@@ -132,9 +132,9 @@ Notre implémentation se trouve dans le fichier \texttt{main.cpp} ainsi que dans
 
 L'exécutable affichera des informations comme l'avancement ou le nombre de contraintes sur \texttt{stderr} ainsi que l'output demandé dans les consignes sur \texttt{stdout}.
 
-Nous avons utilisé plusieurs exemples : ceux des consignes se trouvent dans \texttt{data/impossible} et \texttt{data/datas}. Nous avons aussi utilisé plsieurs fois \texttt{data/BENG06.TXT}, \texttt{data/little}, \texttt{data/minimal} et \texttt{data/bord}.
+Nous avons utilisé plusieurs exemples : ceux des consignes se trouvent dans \texttt{data/impossible} et \texttt{data/datas}. Nous avons aussi utilisé plusieurs fois \texttt{data/BENG06.TXT}, \texttt{data/little}, \texttt{data/minimal} et \texttt{data/bord}.
 
-Nos résultats (ainsi que ceux des questions suivantes) ont été générés et affichés graphiquement grâce à un \textit{IPython notebook} : \texttt{py/results.ipynb} que nous avons développé et dont une version exécutée se trouve dans le fichier \texttt{results.html}\footnote{Celui-ci est aussi disponnible sur internet à l'adresse \url{https://github.com/C4ptainCrunch/info-f-302/blob/master/src/py/results.ipynb}.} que nous vous invitons à consulter\footnote{Vous pouvez aussi interagir avec celui-ci grâce à la commande \texttt{jupyter notebook} à lancer dans le dossier courant après avoir installé ses dépendances (\texttt{(sudo) pip install jupyter matplotlib numpy}).}.
+Nos résultats (ainsi que ceux des questions suivantes) ont été générés et affichés graphiquement grâce à un \textit{IPython notebook} : \texttt{py/results.ipynb} que nous avons développé et dont une version exécutée se trouve dans le fichier \texttt{results.html}\footnote{Celui-ci est aussi disponible sur internet à l'adresse \url{https://github.com/C4ptainCrunch/info-f-302/blob/master/src/py/results.ipynb}.} que nous vous invitons à consulter\footnote{Vous pouvez aussi interagir avec celui-ci grâce à la commande \texttt{jupyter notebook} à lancer dans le dossier courant après avoir installé ses dépendances (\texttt{(sudo) pip install jupyter matplotlib numpy}).}.
 
 Notre programme peut être appelé avec les options suivantes :
 \begin{itemize}
@@ -236,7 +236,7 @@ Ce qui nous donne en FNC :
 
 \subsection{Empêcher un pavé de ``flotter''}
 
-Pour cette question, nous avons considéré que un pavé n'est pas flottant si la totalité de sa surface inférieure est en contact avec le sol ou d'autres blocs.\footnote{Si nous avions voulu considérer le fait que pour qu'un pavé ne soit pas flottant il suffisait qu'une partie de sa surfface inférieure touche un autre bloc ou le sol, nous aurions pu utiliser la contrainte suivante : $
+Pour cette question, nous avons considéré que un pavé n'est pas flottant si la totalité de sa surface inférieure est en contact avec le sol ou d'autres blocs.\footnote{Si nous avions voulu considérer le fait que pour qu'un pavé ne soit pas flottant il suffisait qu'une partie de sa surface inférieure touche un autre bloc ou le sol, nous aurions pu utiliser la contrainte suivante : $
 \forall i \in k, \forall z \in [1, o], \exists x \in [0, n], y \in [0, m],
 \exists j \in k : \beta_{i, x, y, z} \rightarrow \beta_{j, x, y, z-1}
 $}
@@ -258,7 +258,7 @@ $$
   \Big]
 $$
 
-Nous aurons besoin de rajouter la 5ème règle qui avait été laissée de côté à la question 1. En effet, un pavé posé à deux endroits dont la deuxième occurrence est enlevée à l'output pourrait laisser un trou à la place et les couches du dessus pourraient ne pas être supportées.
+Nous aurons besoin de rajouter les 5ème et 6ème règles qui avaient étés laissées de côté à la question 1. En effet, un pavé posé à deux endroits dont la deuxième occurrence est enlevée à l'output pourrait laisser un trou à la place et les couches du dessus pourraient ne pas être supportées.
 
 \subsection{Pivotage}
 
@@ -315,18 +315,21 @@ $$
 
 \subsection{Minimum d'unités de contact}
 
-Ici aussi, la 5ème règle omise à la question 1 doit être rajoutée pour éviter un rectangle ne soit compté deux fois en touchant un bord.
+Ici aussi, les 5ème et 6ème règles omises à la question 1 doivent être rajoutées pour éviter un rectangle ne soit compté deux fois en touchant un bord.
 
-Nous devons déffinir quelques symboles en plus :
+Nous devons définir quelques symboles en plus :
 \begin{itemize}
   \item $P = (m + n) \cdot 2$ est le périmètre du grand rectangle.
   \item $p$ est le nombre minimal de points de contacts désiré
   \item $e_{x,y}$ est un bord orienté en position $(x,y)$
-  \item $\theta$ est l'ensemble des bords orientés, $e$,  (un coin vaut donc pour deux bords orientés). $\#\theta = P$
-  \item $\Omega$ est l'ensemble des ensembles de cardinal $P-p+1$ dont les éléments appartiennent à $\theta$.
-    $\#\Omega = C_P^{P-p+1} = C_P^{p-1}$
-\end{itemize}
+  \item $\theta$ est l'ensemble des bords orientés, $e$,  (un coin vaut donc pour deux bords orientés).
 
+  $\#\theta = P$
+  \item $\Omega$ est l'ensemble des ensembles de cardinal $P-p+1$ dont les éléments appartiennent à $\theta$.
+
+  $\#\Omega = C_P^{P-p+1} = C_P^{p-1}$
+\end{itemize}
+\vspace{1em}
 Nous pouvons maintenant rajouter la contrainte : $$
 \forall \omega \in \Omega, \exists e \in \omega, \exists i \in k : \beta_{i, e_x, e_y}
 $$
@@ -344,11 +347,10 @@ $$
 N'ayant trouvé aucune documentation sur le mode MAX-SAT, nous n'avons pas réussi à l'implémenter.
 Nous pouvons cependant modéliser le problème ainsi que spécifier la liste de contraintes à essayer de satisfaire.
 
-Nous pouvons néenmoins modéliser le problème.
 
-Comme dans la question 9, nous aurons besoin de la 5ème règle omise à la question 1 pour les mêmes raisons.
+Comme dans la question 9, nous aurons besoin des 5ème et 6ème règles omises à la question 1 pour les mêmes raisons.
 
-Ici, nous devrons maximiser le nombres de contraintes satisfaites de cet ensemble-ci :
+Ici, nous devrons maximiser le nombres de contraintes satisfaites appartenant à cet ensemble-ci :
 $$
   \forall e \in \theta \bigvee_{i \in k} \beta_{i, e_x, e_y}
 $$
