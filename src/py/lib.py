@@ -131,7 +131,7 @@ def show_solution_3D(inp, out):
 import subprocess
 
 def call(inp, arg):
-    ret = subprocess.check_output(["../solver", arg], universal_newlines=True, input=open(inp).read())
+    ret = subprocess.check_output(["../solver"] + arg.split(" "), universal_newlines=True, input=open(inp).read())
     out = "\n".join(filter(lambda x: not (x.startswith("|") or x.startswith("=")), ret.split("\n")))
     out = out.replace("  ", " ").replace("  ", " ").replace("  ", " ").replace("  ", " ").split("\n")
     out = list(filter(lambda x: x.strip() != "",map(lambda x: x.strip(), out)))
