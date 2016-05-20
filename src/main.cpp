@@ -5,6 +5,7 @@
 #include <list>
 #include <tuple>
 #include <numeric>
+#include <sstream>
 
 #include "Solver.hpp"
 
@@ -403,7 +404,7 @@ int main(int argc, char *argv[]){
     bool success = false;
 
     if(mode == '2' || mode == 'b'){
-        cout << "| Solving in base mode" << endl;
+        cerr << "Solving in base mode" << endl;
         int k;
         int m;
         int n;
@@ -417,11 +418,11 @@ int main(int argc, char *argv[]){
         int min_border = 0;
         if (mode == 'b'){
             min_border = atoi(argv[2]);
-            cout << "| With minimum border lenght = " << min_border << endl;
+            cerr << "With minimum border lenght = " << min_border << endl;
         }
         success = Solve2D(k, n, m, X,Y, min_border);
     } else if(mode == 'r'){
-        cout << "| Solving in swap mode" << endl;
+        cerr << "Solving in swap mode" << endl;
         int k;
         int m;
         int n;
@@ -437,7 +438,7 @@ int main(int argc, char *argv[]){
         bool floating = false;
         if(mode == 'f')
             floating = true;
-        cout << "| Solving in 3D mode" << endl;
+        cerr << "Solving in 3D mode" << endl;
         int k = 4;
         int m = 3;
         int n = 3;
@@ -447,7 +448,7 @@ int main(int argc, char *argv[]){
         int Z2[] = {3,2,2,1};
         success = solve3D(k, n, m, o, X2, Y2, Z2, floating);
     } else if(mode == 's'){
-        cout << "| Solving in smallest square mode" << endl;
+        cerr << "Solving in smallest square mode" << endl;
         int k;
         int m;
         int n;
@@ -465,6 +466,10 @@ int main(int argc, char *argv[]){
             aire += X[i] * Y[i];
         }
         int h = sqrt(aire);
+
+        std::stringstream buffer;
+        std::streambuf * old = std::cout.rdbuf(buffer.rdbuf());
+
         do {
             cerr << "Trying with a size of " << h << endl;
             success = Solve2D(k, h, h, X,Y);
@@ -488,7 +493,12 @@ int main(int argc, char *argv[]){
                 cerr << "Insolvable" << endl;
             }
         } while(min != max - 1);
-        cout << "Minimal size: " << max << endl;
+
+        // std::string text = buffer.str();
+        std::cout.rdbuf(old);
+
+        cerr << "Minimal size is " << max << endl;
+        cout << max << endl;
 
     }
 
